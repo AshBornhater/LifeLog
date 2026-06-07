@@ -198,8 +198,8 @@ git push
 ## 📋 Checklist Sebelum Push
 
 - [ ] Sudah `pull` dari `main` sebelum mulai kerja
-- [ ] Berada di branch yang benar — bukan `main`
-- [ ] Sudah `git status` — tidak ada file yang tidak sengaja ikut
+- [ ] Berada di branch yang benar, bukan `main`
+- [ ] Sudah `git status`, tidak ada file yang tidak sengaja ikut
 - [ ] Sudah `git add` file yang diperlukan
 - [ ] Pesan commit jelas dan menggunakan format yang benar
 - [ ] Kode bisa di-compile / tidak ada error besar
