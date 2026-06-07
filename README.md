@@ -1,4 +1,4 @@
-# 📁 Project_Kelompok_5
+# Project_Kelompok_5
 
 > **project praktikum alpro 2026**
 
@@ -13,7 +13,7 @@ Pastikan kamu sudah:
 
 ---
 
-## 🚀 Clone Repository (Lakukan Sekali Saja)
+## Clone Repository (Lakukan Sekali Saja)
 
 Buka terminal / cmd, lalu jalankan:
 
@@ -24,9 +24,9 @@ cd Project-Alpro-Kelompok-5
 
 ---
 
-## 🌿 Membuat Branch Sendiri (Lakukan Sekali Saja)
+## Membuat Branch Sendiri (Lakukan Sekali Saja)
 
-> ⚠️ Jangan pernah kerja langsung di `main`. Selalu buat branch sendiri.
+> Jangan pernah kerja langsung di `main`. Selalu buat branch sendiri.
 
 ```bash
 git switch -c nama_branch
@@ -47,7 +47,7 @@ Output:
 
 ---
 
-## 🔄 Workflow Harian
+## Workflow Harian
 
 Lakukan langkah ini **setiap kali mau mulai kerja**.
 
@@ -155,7 +155,7 @@ Setelah push, minta perubahan kamu digabungkan ke `main` lewat Pull Request:
 
 ---
 
-## 🛠️ Mengatasi Conflict
+## Mengatasi Conflict
 
 Conflict terjadi ketika dua orang mengubah baris yang sama pada file yang sama.
 
@@ -191,11 +191,11 @@ git commit -m "fix: resolve conflict"
 git push
 ```
 
-> 💡 Conflict bisa dihindari dengan selalu `pull` dari `main` sebelum mulai kerja.
+> Conflict bisa dihindari dengan selalu `pull` dari `main` sebelum mulai kerja.
 
 ---
 
-## 📋 Checklist Sebelum Push
+## Checklist Sebelum Push
 
 - [ ] Sudah `pull` dari `main` sebelum mulai kerja
 - [ ] Berada di branch yang benar, bukan `main`
@@ -208,7 +208,7 @@ git push
 
 ---
 
-## 📌 Referensi Perintah
+## Referensi Command
 
 ```bash
 git status                        # cek status file
