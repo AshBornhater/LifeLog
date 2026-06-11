@@ -1,0 +1,64 @@
+# OS
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*~
+.directory
+ 
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+ 
+# C++
+*.o
+*.a
+*.so
+*.dll
+*.exe
+*.out
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+ 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+ 
+# Java
+*.class
+*.jar
+*.war
+target/
+.gradle/
+.idea/
+*.iml
+ 
+# Secrets & env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+ 
+# Logs & temp
+*.log
+*.tmp
+*.bak
+*.swp
+logs/
+ 
