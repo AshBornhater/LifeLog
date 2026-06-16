@@ -1,5 +1,17 @@
 #include <iostream>
+#include <string>
+#include <fstream>
+#include "../include/util.hpp"
 
-int main() {
-    std::cout << "LifeLog\n";
+int main()
+{
+    bool stop = false;
+    while (!stop)
+    {
+        const std::string mainMenuOption[] = {};
+        loginInterface(stop);
+        moveCursor(50, 1);
+    }
+    SHOW_CURSOR;
+    return 0;
 }
