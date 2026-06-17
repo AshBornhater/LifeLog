@@ -17,7 +17,7 @@
 
 #include "../include/util.hpp"
 
-#define BORDER_ROW 5
+#define BORDER_ROW 3
 #define BORDER_COLUMN 42
 #define DELIM "<|>"
 #define DELIM_LEN 3
@@ -85,6 +85,7 @@ void drawBorder(int startRow, int startCol, int height, int width);
 void drawLifeLogLogoLogin(int startRow, int startCol);
 void textField();
 void drawOption(const std::string *arrOptions, int optionslength, int userChoose);
+void drawOption(const string *arrOptions, int optionslength, int userChoose, int borderHeight);
 
 // =========================================================================
 // 6. MEMORY MANAGEMENT UTILS
@@ -96,7 +97,7 @@ userData *resizeRecords(userData *oldArr, int oldSize, int newSize);
 // 7. AUTHENTICATION SYSTEMS
 // =========================================================================
 
-bool parseAccount(const std::string &line, Account &out);
+bool parseAccount(const string &line, Account &parsedData);
 bool login(const std::string &username, const std::string &password);
 bool usernameExists(const std::string &username);
 bool writeAccount(const Account &account);
@@ -106,17 +107,23 @@ bool writeAccount(const Account &account);
 // =========================================================================
 
 bool loginMenu();
-bool registerMenu(); // Sudah disamakan menggunakan huruf kecil 'r' agar sinkron dengan .cpp
+bool registerMenu();
 void loginInterface(bool &stop);
+void mainMenuInterface(bool &stop);
 
 // =========================================================================
 // 9. JOURNAL MANAGEMENT SYSTEM
 // =========================================================================
 
-bool parseLine(const std::string &line, userData &out);
+bool parseLine(const std::string &line, userData &parsedData);
 void readInt(int &num, int minValue, int maxValue);
-void inputUserData(userData &out);
+void inputUserData(userData &journalBUffer);
 userData *readFile(const std::string &filename, int &outCount);
 userData *searchByUsername(const std::string &filename, const std::string &targetUsername, int &outCount);
 void printUserJournal(const std::string &filename, const std::string &targetUsername);
 bool writeFile(const std::string &filename, const userData &data);
+
+constexpr int NIM_KEY[] = {67, 64, 100, 104, 129, 81, 29};
+constexpr int KEY_LENGTH = 7;
+
+string encryptPassword(const string &plain);

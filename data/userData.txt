@@ -1,0 +1,152 @@
+//Data Dummy
+
+homelander<|>2026-06-18<|>5<|>3<|>Tidur pules banget malem ini, mantap gak ada gangguan bising dari tetangga sebelah rumah.
+Aqua<|>2026-06-19<|>3<|>2<|>Ngeliat kembang api semalem bikin terharu sampe pengen nangis, tapi pagi ini kepala malah keliyengan gara-gara begadang.
+Margot Robbie<|>2026-06-20<|>5<|>6<|>Ngeteh hijau anget di pagi yang adem dan cerah sambil nyusun plan kerjaan baru, vibes-nya tenang banget.
+homelander<|>2026-06-21<|>5<|>8<|>Mulai rutinitas lari pagi lagi keliling kompleks, rasanya stamina badanku gokil sih, jauh di atas rata-rata orang biasa.
+Aqua<|>2026-06-22<|>2<|>4<|>Niatnya mau bersih-bersih kamar mandi, eh malah teledor mecahin botol sabun cair kesayangan sampe tumpah semua, apes banget.
+Margot Robbie<|>2026-06-23<|>3<|>7<|>Hari pertama masuk kerja lagi abis libur bentar, ngeliat tumpukan email di inbox langsung bikin kepala puyeng.
+homelander<|>2026-06-24<|>4<|>6<|>Nghabisin waktu siang buat beresin halaman belakang sama rapi-rapi perkakas pertukangan di gudang.
+Aqua<|>2026-06-25<|>5<|>5<|>Nemu kedai es krim baru yang rasanya manis seger parah, mood langsung auto naik seketika.
+Margot Robbie<|>2026-06-26<|>4<|>8<|>Berhasil nyelesaiin draf proposal proyek penting sebelum deadline, rasanya satu beban berat langsung plong.
+homelander<|>2026-06-27<|>2<|>3<|>Cuaca hari ini panasnya ampun-ampunan, mana AC kamar tiba-tiba mati lagi, bikin bete seharian.
+Aqua<|>2026-06-28<|>1<|>1<|>Dompet ilang pas lagi belanja di swalayan, panik setengah mati sampe nangis kejer di pojokan jalan.
+Margot Robbie<|>2026-06-29<|>5<|>5<|>Dateng ke acara reuni kecil-kecilan bareng temen sekolah dulu, seru banget bernostalgia sambil ketawa lepas nginget masa lalu.
+homelander<|>2026-06-30<|>5<|>9<|>Berhasil benerin AC yang rusak kemaren sendirian tanpa panggil teknisi, emang gue bisa diandelin banget dalam segala hal.
+Aqua<|>2026-07-01<|>4<|>6<|>Untung ada orang baik yang balikin dompet gue ke pusat informasi, lega banget rasanya walaupun duit tunainya agak berkurang dikit.
+Margot Robbie<|>2026-07-02<|>2<|>4<|>Terjebak macet total di tol sampe tiga jam pas balik kantor, bener-bener dapet "energy drain" di jalanan.
+homelander<|>2026-07-03<|>4<|>5<|>Nyobain bikin steak daging sapi rumahan malem ini, tingkat kematangannya pas banget, juara sesuai selera gue.
+Aqua<|>2026-07-04<|>3<|>5<|>Seharian cuma rebahan males-malesan di kasur sambil nonton video kocak di internet gara-gara di luar hujan deres.
+Margot Robbie<|>2026-07-05<|>5<|>9<|>Bangun pagi ini dengan badan yang seger bugar dan full energy buat ngadepin jadwal yang super padat.
+homelander<|>2026-07-06<|>3<|>6<|>Dateng ke rapat bulanan RT yang ngebosenin parah, banyak tetangga yang cuma debat kusir doang gak jelas solusinya.
+Aqua<|>2026-07-07<|>4<|>4<|>Diajakin makan bakso urat anget di pinggir jalan pas ujan sore-sore, kuah pedesnya bener-bener mantap jiwa.
+Margot Robbie<|>2026-07-08<|>2<|>5<|>Lagi overthinking mikirin masa depan karier, rasanya pengen banget ambil cuti panjang buat healing dan jernihin pikiran.
+homelander<|>2026-07-09<|>5<|>7<|>Nonton dokumenter sejarah militer malem ini, seru juga ngeliat taktik perang zaman dulu.
+Aqua<|>2026-07-10<|>1<|>2<|>Sakit gigi parah nyiksa banget dari semalem, gabisa tidur dan gabisa makan apa-apa hari ini, asli tersiksa.
+Margot Robbie<|>2026-07-11<|>4<|>8<|>Ngerapihin ulang meja rias sekalian ngebuang makeup yang udah expired, kamar gue sekarang kelihatan aesthetic banget.
+homelander<|>2026-07-12<|>4<|>5<|>Beli sepatu kasual baru warna item pekat, kece banget nih dipake buat jalan-jalan santai sore.
+Aqua<|>2026-07-13<|>3<|>4<|>Akhirnya beraniin diri ke dokter gigi buat periksa, pas disuntik bius lokal rasanya deg-degan dan serem banget.
+Margot Robbie<|>2026-07-14<|>5<|>7<|>Dapet kiriman bunga misterius di kantor pagi ini, wanginya harum banget bikin senyum-senyum sendiri seharian.
+homelander<|>2026-07-15<|>5<|>4<|>Nghabisin hari Sabtu sambil santai di balkon rumah ditemani segelas susu anget kesukaan gue.
+Aqua<|>2026-07-16<|>5<|>6<|>Sakit giginya akhirnya reda abis minum obat dari dokter, malem ini udah bisa makan nasi dengan tenang tanpa kesiksa.
+Margot Robbie<|>2026-07-17<|>4<|>5<|>Nyobain resep choco chip cookies baru bareng nyokap di rumah, wanginya langsung semerbak memenuhi isi rumah.
+homelander<|>2026-07-18<|>3<|>5<|>Motor kesayangan tiba-tiba mogok pas lagi jalan sore, terpaksa deh ngedorong sampe ke bengkel terdekat, apes.
+Aqua<|>2026-07-19<|>2<|>3<|>Gagal total bikin puding susu gara-gara kebanyakan air, teksturnya jadi hancur dan benyek banget.
+Margot Robbie<|>2026-07-20<|>5<|>8<|>Jalan-jalan santai di taman kota pas sore hari sambil nikmatin view sunset yang indah banget.
+homelander<|>2026-07-21<|>5<|>9<|>Kata montir bengkel kerusakannya cuma sepele dan langsung kelar hari ini, tarikannya langsung joss lagi kaya baru.
+Aqua<|>2026-07-22<|>4<|>5<|>Beli tanaman hias sukulen mini buat ditaruh di jendela kamar, semoga kali ini beneran bisa ngerawatnya dan gak layu lagi.
+Margot Robbie<|>2026-07-23<|>2<|>4<|>Hari Senin yang chaos banget gara-gara tumpukan dokumen kerjaan tiba-tiba ilang dari folder PC.
+homelander<|>2026-07-24<|>4<|>7<|>Nyelesaiin draf laporan kerja mingguan lebih cepet dari biasanya, besok tinggal presentasi santai di depan direktur.
+Aqua<|>2026-07-25<|>5<|>7<|>Nolongin anak kucing jalanan yang kepleset di selokan, seneng banget ngeliat dia bisa lari-lari girang lagi.
+Margot Robbie<|>2026-07-26<|>5<|>9<|>Plong banget karena file dokumen yang ilang kemaren ternyata ketemu di folder backup tersembunyi.
+homelander<|>2026-07-27<|>5<|>5<|>Presentasi pagi ini sukses besar, semua jajaran direksi langsung standing applause buat gue.
+Aqua<|>2026-07-28<|>3<|>5<|>Lagi kangen banget sama kampung halaman plus masakan rumah, pengen cepet-cepet dapet libur panjang biar bisa mudik.
+Margot Robbie<|>2026-07-29<|>4<|>7<|>Beli novel fiksi baru di toko buku langganan, udah gak sabar pengen langsung baca sebelum tidur nanti.
+homelander<|>2026-07-30<|>2<|>4<|>Makan siang di warung langganan yang biasanya mantap, hari ini zonk rasanya keasinan dan bumbunya gak rata.
+Aqua<|>2026-07-31<|>5<|>5<|>Nghabisin waktu buat video call bareng orang tua di rumah, rasa kangen yang numpuk akhirnya sedikit terobati.
+Margot Robbie<|>2026-08-01<|>3<|>6<|>Ikut kelas meditasi online sore ini buat calming down pikiran yang lagi kusut gara-gara urusan keluarga.
+homelander<|>2026-08-02<|>4<|>8<|>Mulai nyuci semua gorden jendela rumah yang debunya udah tebel, rumah jadi kerasa lebih fresh dan wangi sekarang.
+Aqua<|>2026-08-03<|>2<|>4<|>Kesiangan bangun pagi gara-gara lupa nge-set alarm, terpaksa lari-larian ngejar busway sambil bawa tas berat.
+Margot Robbie<|>2026-08-04<|>5<|>8<|>Novel yang kubaca semalem alurnya keren dan gak ketebak sama sekali, plot twist-nya bikin speechless!
+homelander<|>2026-08-05<|>5<|>5<|>Nikmatin weekend dengan jalan kaki santai muterin kompleks perumahan sambil nyapa tetangga kanan kiri.
+Aqua<|>2026-08-06<|>4<|>7<|>Akhirnya gajian bulan ini cair tepat waktu, langsung gercep nyisihin sebagian besar buat tabungan.
+Margot Robbie<|>2026-08-07<|>4<|>5<|>Deep cleaning area dapur sekalian nata bumbu-bumbu masak ke wadah estetik yang sewarna.
+homelander<|>2026-08-08<|>3<|>5<|>Nonton match tim favorit di TV, sayangnya mereka harus kalah tipis di menit-menit akhir, nyesek banget.
+Aqua<|>2026-08-09<|>5<|>5<|>Ngajak temen kosan makan malem bareng di fast food buat ngerayain kelulusannya, seru abis.
+Margot Robbie<|>2026-08-10<|>2<|>3<|>Kepleset di tangga rumah gara-gara gak fokus, jalan sambil asyik main HP, kaki jadi memar dikit deh.
+homelander<|>2026-08-11<|>5<|>9<|>Memulai hari Senin dengan semangat membara, semua target harian kelar sebelum jam makan siang.
+Aqua<|>2026-08-12<|>3<|>6<|>Nyoba ngurangin ngopi hari ini, efeknya malah ngantuk berat dan lemes di meja kerja sepanjang sore.
+Margot Robbie<|>2026-08-13<|>4<|>7<|>Pergi ke salon buat potong rambut model baru, look-nya jadi kelihatan lebih fresh dan modern.
+homelander<|>2026-08-14<|>4<|>6<|>Nemuin lagi pulpen besi kesayangan gue yang sempet ilang seminggu, ternyata nyelip di bawah jok mobil.
+Aqua<|>2026-08-15<|>5<|>8<|>Berhasil beresin tumpukan baju kotor yang udah menggunung berhari-hari di kamar mandi kosan, plong!
+Margot Robbie<|>2026-08-16<|>1<|>2<|>Hari ini dapet kabar duka, salah satu kucing peliharaan kesayangan mati mendadak karena sakit usus, sedih banget.
+homelander<|>2026-08-17<|>2<|>4<|>Malem ini udaranya dingin parah plus angin kencang, badan mulai ngedrop dan bersin-bersin mulu.
+Aqua<|>2026-08-18<|>4<|>5<|>Masak mi instan pake telor setengah matang plus sayuran seger, nikmat banget sore-sore pas lagi ujan gini.
+Margot Robbie<|>2026-08-19<|>2<|>4<|>Suasana rumah sepi banget tanpa suara meong kucing kesayangan yang manja, sedihnya masih berasa di hati.
+homelander<|>2026-08-20<|>4<|>7<|>Minum obat flu herbal terus tidur cepet semalem, pagi ini kondisi badan udah fit lagi 100 persen.
+Aqua<|>2026-08-21<|>5<|>5<|>Tanaman sukulen kecil di jendela kamar gue mulai tumbuh tunas baru, seneng banget usaha ngerawatnya berhasil!
+Margot Robbie<|>2026-08-22<|>4<|>8<|>Nyoba buat sibuk dengan fokus nyelesaiin kerjaan kantor biar gak terus-terusan larut dalam kesedihan.
+homelander<|>2026-08-23<|>5<|>5<|>Paket belanjaan online dateng lebih cepet dari estimasi, kondisinya mulus banget gak ada defect sama sekali.
+Aqua<|>2026-08-24<|>2<|>3<|>Lampu kamar kosan tiba-tiba kedap-kedip serem kaya di film horor, terpaksa tidur malem ini pake lampu darurat doang.
+Margot Robbie<|>2026-08-25<|>5<|>7<|>Makan siang bareng sahabat lama di kafe berkonsep garden yang aesthetic abis.
+homelander<|>2026-08-26<|>4<|>8<|>Bersihin semua koleksi sepatu kulit biar tetep shiny dan gak gampang jamuran di musim hujan kaya sekarang.
+Aqua<|>2026-08-27<|>5<|>5<|>Ibu kos langsung gercep gantiin bohlam lampu kamar gue yang rusak pagi ini, pelayanannya mantap.
+Margot Robbie<|>2026-08-28<|>4<|>6<|>Ikut kelas yoga di gym pagi-pagi buta, badan emang kaku tapi abis itu pikiran jadi rileks banget.
+homelander<|>2026-08-29<|>5<|>4<|>Nghabisin Minggu sore dengan jalan-jalan santai di pantai sambil nikmatin angin laut yang sepoi-sepoi adem.
+Aqua<|>2026-08-30<|>3<|>5<|>Cuaca mendung bikin males ngapa-ngapain di luar, seharian cuma mageran pake selimut sambil baca komik lawas.
+Margot Robbie<|>2026-08-31<|>5<|>5<|>Bikin pancake pisang madu sendiri buat sarapan pagi, teksturnya lembut dan rasanya enak parah.
+homelander<|>2026-09-01<|>2<|>6<|>Hari Senin diawali dengan rapat dadakan yang bikin capek gara-gara bahas pembagian wilayah kerja baru yang ribet.
+Aqua<|>2026-09-02<|>4<|>7<|>Berhasil nyusun budgeting bulanan yang baru biar gak boros jajan kaya bulan-bulan kemaren.
+Margot Robbie<|>2026-09-03<|>5<|>10<|>Hari ini produktif pol! Berhasil nyelesaiin laporan bulanan yang gede seminggu lebih awal dari schedule.
+homelander<|>2026-09-04<|>4<|>5<|>Beli cangkir kopi keramik baru warna abu-abu yang kelihatan mewah buat ditaruh di kantor baru gue.
+Aqua<|>2026-09-05<|>1<|>2<|>Apes banget, gak sengaja numpahin kopi panas di meja kerja sampe kena beberapa lembar dokumen penting kantor.
+Margot Robbie<|>2026-09-06<|>3<|>5<|>Kebangun tengah malem gara-gara suara petir menggelegar kencang banget, alhasil gak bisa tidur lagi sampe subuh.
+homelander<|>2026-09-07<|>5<|>9<|>Beresin semua draf revisi kontrak kerja klien kakap sebelum deadline sore ini kelar.
+Aqua<|>2026-09-08<|>4<|>5<|>Berhasil ngeringin dokumen yang ketumpahan kopi kemaren pake hair dryer punya temen kerja, untung terselamatkan.
+Margot Robbie<|>2026-09-09<|>5<|>6<|>Nikmatin secangkir cokelat panas di pagi hari sambil dengerin musik instrumental klasik yang damai banget.
+homelander<|>2026-09-10<|>4<|>7<|>Bantu ngajarin keponakan ngerjain PR matematika, lumayan lah ya sekalian melatih kesabaran.
+Aqua<|>2026-09-11<|>2<|>4<|>Ban motor bocor di tengah jalan pas mau balik, terpaksa ngedorong motor sekilo buat nyari tukang tambal ban, capek parah.
+Margot Robbie<|>2026-09-12<|>4<|>8<|>Beli scented candle aroma lavender buat di kamar tidur, udaranya jadi wangi banget dan bikin rileks.
+homelander<|>2026-09-13<|>5<|>5<|>Nghabisin malem Jumat dengan nongkrong santai bareng beberapa tetangga deket di warkop depan kompleks.
+Aqua<|>2026-09-14<|>5<|>7<|>Berhasil lari pagi sejauh tiga kilo weekend ini tanpa ngerasa engos-engosan parah, fisik gue mulai upgrade nih.
+Margot Robbie<|>2026-09-15<|>5<|>5<|>Main ke galeri seni lukis kontemporer di pusat kota, banyak artwork keren yang manjain mata banget.
+homelander<|>2026-09-16<|>5<|>8<|>Dapet bonusan akhir bulan dari hasil project sampingan, bener-bener kerja keras terbayar lunas hari ini!
+Aqua<|>2026-09-17<|>4<|>6<|>Dateng ke acara arisan keluarga besar, seneng banget bisa makan soto ayam anget buatan tante yang khas.
+Margot Robbie<|>2026-09-18<|>3<|>4<|>Badan rasanya lemes banget gara-gara telat makan siang akibat keasyikan nyelesaiin kerjaan admin.
+homelander<|>2026-09-19<|>4<|>5<|>Mengawali hari baru dengan good vibes, pagi-pagi buta udah rapi-rapi tanaman hias di teras rumah.
+Aqua<|>2026-09-20<|>2<|>5<|>Kepala agak pusing kliyengan gara-gara cuaca pancaroba yang berubahnya ekstrem banget siang ini.
+Margot Robbie<|>2026-09-21<|>5<|>6<|>Chill aja di rumah seharian full sambil maskeran pake aloe vera alami buat pampering diri sendiri.
+homelander<|>2026-09-22<|>5<|>8<|>Berhasil ngombak-ngambik ruang kerja pribadi di rumah biar dapet vibes yang minimalis dan modern.
+Aqua<|>2026-09-23<|>5<|>5<|>Badan udah enakan banget abis bed rest total seharian kemaren plus banyakin minum air putih.
+Margot Robbie<|>2026-09-24<|>2<|>4<|>Telat dateng rapat penting gara-gara jalanan utama ditutup sementara karena banjirnya lumayan parah.
+homelander<|>2026-09-25<|>4<|>6<|>Nyobain workout beban di gym kompleks malem ini, otot-otot berasa pegel tapi seger sih.
+Aqua<|>2026-09-26<|>3<|>5<|>Laptop tiba-tiba lemotnya ampun-ampunan pas lagi dipake bikin tugas penting, bikin gemes nungguin loading-nya.
+Margot Robbie<|>2026-09-27<|>5<|>8<|>Meskipun kemaren kena macet, hari ini semua urusan kerjaan bareng klien luar kota kelar dengan lancar jaya.
+homelander<|>2026-09-28<|>5<|>5<|>Makan siang di resto Jepang favorit bareng keluarga buat ngerayain ultah anak pertama gue.
+Aqua<|>2026-09-29<|>5<|>8<|>Berhasil install ulang OS laptop sendiri modal nonton tutorial di internet, sekarang performanya auto ngebut lagi.
+Margot Robbie<|>2026-09-30<|>4<|>6<|>Nyuci baju rajut kesayangan pake detergen khusus biar serat benangnya tetep lembut dan gak rusak.
+homelander<|>2026-10-01<|>3<|>5<|>Sempet ada miskom dikit sama anak divisi pas lagi diskusi, tapi untung langsung clear secara kekeluargaan.
+Aqua<|>2026-10-02<|>4<|>5<|>Ke supermarket sore-sore buat nyetok mi instan sama susu kotak buat cemilan malem.
+Margot Robbie<|>2026-10-03<|>5<|>7<|>Dinner romantis tapi simple bareng suami di rumah, nikmatin quality time yang anget penuh cinta.
+homelander<|>2026-10-04<|>5<|>9<|>Berhasil nge-lobi klien yang agak rewel buat sign kontrak kerja sama senilai puluhan juta sore ini, mantap.
+Aqua<|>2026-10-05<|>3<|>4<|>Sandal jepit andalan tiba-tiba putus di jalan pas lagi jalan kaki ke warung kelontong sebelah, apes.
+Margot Robbie<|>2026-10-06<|>4<|>5<|>Beli pajangan vas bunga kaca mewah buat dipajang di ruang tamu biar rumah kelihatan lebih elegan.
+homelander<|>2026-10-07<|>4<|>5<|>Nghabisin Sabtu sore dengan muter-muter kota pakai mobil sambil nikmatin indahnya city light malem hari.
+Aqua<|>2026-10-08<|>5<|>5<|>Berhasil dapet sandal jepit baru yang motifnya lucu warna biru laut kesukaan gue, harganya murah meriah lagi.
+Margot Robbie<|>2026-10-09<|>5<|>8<|>Produktif banget hari ini ngeberesin rumah total, mulai dari ngebersihin langit-langit sampe ngepel lantai teras.
+homelander<|>2026-10-10<|>5<|>4<|>Nikmatin sarapan bubur ayam anget bareng keluarga besar di hari Minggu pagi yang adem dan cerah.
+Aqua<|>2026-10-11<|>4<|>6<|>Bantuin ngangkat jemuran punya temen kos sebelah kamar gara-gara dia mendadak musti balik kampung.
+Margot Robbie<|>2026-10-12<|>2<|>3<|>Badan agak meriang hari ini gara-gara kemaren kecapekan ngeberesin seluruh rumah sendirian.
+homelander<|>2026-10-13<|>2<|>7<|>Hari Senin diawali dengan tumpukan task baru yang ngebosenin di meja kerja, rasanya mager parah.
+Aqua<|>2026-10-14<|>5<|>5<|>Nemu jajanan pasar klepon yang lumer, manis, gurih isi gula merah di deket halte busway kantor, juara!
+Margot Robbie<|>2026-10-15<|>4<|>5<|>Kondisi badan udah mulai enakan abis minum obat penurun panas dan tidur yang cukup semaleman.
+homelander<|>2026-10-16<|>4<|>8<|>Nyelesaiin analisis data mingguan dengan teliti banget, performa kerja gue dinilai stabil banget sama manajer.
+Aqua<|>2026-10-17<|>1<|>3<|>Kejebak ujan deres pas balik kerja, mana gak bawa jas hujan, terpaksa berteduh sambil menggigil kedinginan.
+Margot Robbie<|>2026-10-18<|>5<|>8<|>Berhasil nyusun itinerary buat liburan weekend besok bareng keluarga kecil ke daerah pegunungan yang asri.
+homelander<|>2026-10-19<|>5<|>5<|>Nemenin si kecil belajar naik sepeda roda dua di taman, bangga banget ngeliat dia udah mulai bisa seimbang.
+Aqua<|>2026-10-20<|>3<|>4<|>Badan agak greges hari ini gara-gara kehujanan kemaren sore, terpaksa bikin teh jahe anget sendiri di dapur.
+Margot Robbie<|>2026-10-21<|>4<|>6<|>Nyiapin outfit anget sama obat-obatan pribadi buat bekal short escape ke pegunungan lusa nanti.
+homelander<|>2026-10-22<|>4<|>6<|>Beli jaket tebal baru warna abu-abu gelap buat persiapan short escape weekend ini biar gak kedinginan.
+Aqua<|>2026-10-23<|>5<|>5<|>Demam gue sembuh total berkat efek teh jahe kemaren plus tidur cepet tanpa main HP semaleman.
+Margot Robbie<|>2026-10-24<|>5<|>9<|>Berhasil nuntasin semua urusan kerjaan mingguan kantor hari ini, besok tinggal berangkat liburan tanpa beban pikiran!
+homelander<|>2026-10-25<|>5<|>5<|>Otw menuju vila pegunungan bareng keluarga besar sore ini, view bukitnya bener-bener cakep parah.
+Aqua<|>2026-10-26<|>4<|>7<|>Nyobain jalan-jalan sore santai ke taman kota nyari angin seger sambil nikmatin hembusan angin sepoi-sepoi.
+Margot Robbie<|>2026-10-27<|>5<|>5<|>Sampe di vila pegunungan malem ini, udaranya dingin seger alami bikin pusing di kepala langsung ilang seketika.
+homelander<|>2026-10-28<|>5<|>4<|>Nghabisin waktu sambil bakar jagung manis anget bareng anak-anak di depan perapian vila pegunungan.
+Aqua<|>2026-10-29<|>5<|>5<|>Nghabisin malem Minggu dengan baca komik petualangan seru kesukaan gue ditemani semangkuk kacang rebus gurih.
+Margot Robbie<|>2026-10-30<|>5<|>6<|>Nikmatin cantiknya pemandangan kabut pagi yang nyelimutin perbukitan hijau sambil ngopi anget.
+homelander<|>2026-10-31<|>4<|>5<|>Balik ke rumah abis liburan dari pegunungan, badan agak capek di jalan tapi pikiran bener-bener fresh.
+Aqua<|>2026-11-01<|>3<|>5<|>Ikut rapat RT bahas persiapan lomba kompleks, jalannya santai banget dan penuh banyolan.
+Margot Robbie<|>2026-11-02<|>4<|>4<|>Sampe rumah lagi sore hari dengan selamat tanpa ada kendala berarti di jalan tol yang lancar jaya.
+homelander<|>2026-11-03<|>3<|>7<|>Hari Senin yang padat sama jadwal rapat koordinasi kerja, tumpukan berkas tugas baru udah nungguin lagi di meja.
+Aqua<|>2026-11-04<|>5<|>8<|>Berhasil bikin konsep materi promosi kreatif yang baru buat dipresentasiin di depan manajer marketing besok.
+Margot Robbie<|>2026-11-05<|>5<|>9<|>Memulai pagi dengan high energy, berhasil nyelesaiin presentasi bisnis yang berbobot banget.
+homelander<|>2026-11-06<|>5<|>8<|>Nyelesaiin seluruh proyeksi budget tahunan divisi kerja dengan hasil yang detail dan presisi tanpa ada error hitungan.
+Aqua<|>2026-11-07<|>5<|>6<|>Sesi presentasi materi promosi gue dapet pujian dari manajer marketing, kerja keras begadang semalem kebayar deh.
+Margot Robbie<|>2026-11-08<|>2<|>5<|>Lagi agak kurang mood beraktivitas hari ini, kepala keliyengan gara-gara kurang minum air putih anget.
+Aqua<|>2026-11-09<|>4<|>5<|>Nyobain meditasi pernapasan santai sekitar lima belas menit sebelum tidur malem ini, dada rasanya jadi plong banget.
+homelander<|>2026-11-10<|>4<|>5<|>Ngajak temen-temen kantor merayakan kelancaran penyusunan budget divisi dengan makan siang bareng di warung steak.
+Margot Robbie<|>2026-11-11<|>5<|>7<|>Banyakin minum air putih anget hari ini, kondisi badan berangsur pulih dan bertenaga lagi kaya biasanya.
+homelander<|>2026-11-12<|>5<|>9<|>Puas banget karena semua workflow tim gue berjalan terstruktur rapi sesuai sama target bulanan yang di-set.
+Aqua<|>2026-11-13<|>3<|>6<|>Ikut evaluasi mingguan performa kerja individu, dapet beberapa feedback kritik yang membangun dari mentor senior.
+Margot Robbie<|>2026-11-14<|>4<|>8<|>Beli tanaman gantung suplir baru buat ditaruh di sudut teras, rumah gue sekarang kelihatan jauh lebih asri dan greeny.

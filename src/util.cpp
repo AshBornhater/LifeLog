@@ -15,7 +15,7 @@
 
 #include "../include/util.hpp"
 
-#define BORDER_ROW 5
+#define BORDER_ROW 3
 #define BORDER_COLUMN 42
 #define DELIM "<|>"
 #define DELIM_LEN 3
@@ -31,6 +31,7 @@
 
 using std::cin;
 using std::cout;
+using std::endl;
 using std::getline;
 using std::ifstream;
 using std::ios;
@@ -133,8 +134,12 @@ string nextToken(const string &line, size_t &position)
 string getCurrentDate()
 {
     time_t now = time(0);
-    char *dateNow = ctime(&now);
-    return string(dateNow);
+    tm *localTime = localtime(&now);
+    char dateFormatted[11];
+
+    strftime(dateFormatted, sizeof(dateFormatted), "%Y-%m-%d", localTime);
+
+    return dateFormatted;
 }
 
 // =========================================================================
@@ -198,6 +203,49 @@ void drawLifeLogLogoLogin(int startRow, int startCol)
     cout << "╚══════════════════════════════╝";
 }
 
+void mainMenuInterface(bool &stop)
+{
+    int menuChoice;
+    const string mainMenuOption[] = {"JURNAL HARIAN", "STATISTIK", "ACHIEVEMENT", "PROFIL AKUN", "ABOUT", "LOGOUT", "EXIT"};
+    const int mainMenuOptionLength = 7;
+
+    CLEAR_SCREEN;
+    HIDE_CURSOR;
+
+    menuChoice = 0;
+    bool running = true;
+    while (running)
+    {
+        CLEAR_SCREEN;
+        drawOption(mainMenuOption, mainMenuOptionLength, menuChoice, 39);
+
+        int key = getKey();
+        switch (key)
+        {
+        case 72:
+            menuChoice = (menuChoice == 0) ? mainMenuOptionLength - 1 : menuChoice - 1;
+            break;
+        case 80:
+            menuChoice = (menuChoice == mainMenuOptionLength - 1) ? 0 : menuChoice + 1;
+            break;
+        case 13:
+            switch (menuChoice)
+            {
+            case 0:
+
+                break;
+            case 1:
+
+            case 2:
+                stop = true;
+                SHOW_CURSOR;
+                CLEAR_SCREEN;
+                return;
+            }
+        }
+    }
+}
+
 void textField()
 {
     moveCursor(BORDER_ROW + 11, 53);
@@ -248,6 +296,35 @@ void drawOption(const string *arrOptions, int optionslength, int userChoose)
     cout << RESET_COLOR;
 }
 
+void drawOption(const string *arrOptions, int optionslength, int userChoose, int borderHeight)
+{
+    drawBorder(BORDER_ROW, BORDER_COLUMN, borderHeight, 80);
+    int buttonrow = BORDER_ROW + 11, buttonColumn = BORDER_COLUMN + 26;
+    drawLifeLogLogoLogin(BORDER_ROW + 2, BORDER_COLUMN + 24);
+    for (int i = 0; i < optionslength; i++)
+    {
+        if (i == userChoose)
+            cout << YELLOW;
+        else
+            cout << RESET_COLOR;
+
+        int padTotal = 26;
+        int labelLen = arrOptions[i].length();
+        int padLeft = (padTotal - labelLen) / 2;
+        int padRight = padTotal - labelLen - padLeft;
+
+        moveCursor(buttonrow, buttonColumn);
+        cout << "============================";
+        moveCursor(buttonrow + 1, buttonColumn);
+        cout << "|" << string(padLeft, ' ') << arrOptions[i] << string(padRight, ' ') << "|";
+        moveCursor(buttonrow + 2, buttonColumn);
+        cout << "============================";
+
+        buttonrow += 4;
+    }
+    cout << RESET_COLOR;
+}
+
 // =========================================================================
 // 5. MEMORY MANAGEMENT UTILS
 // =========================================================================
@@ -267,16 +344,16 @@ userData *resizeRecords(userData *oldArr, int oldSize, int newSize)
 // 6. AUTHENTICATION SYSTEM
 // =========================================================================
 
-bool parseAccount(const string &line, Account &out)
+bool parseAccount(const string &line, Account &parsedData)
 {
     if (line.empty())
         return false;
 
     size_t pos = 0;
-    out.username = nextToken(line, pos);
-    out.password = line.substr(pos);
+    parsedData.username = nextToken(line, pos);
+    parsedData.password = line.substr(pos);
 
-    if (out.username.empty() || out.password.empty())
+    if (parsedData.username.empty() || parsedData.password.empty())
         return false;
     return true;
 }
@@ -298,7 +375,7 @@ bool login(const string &username, const string &password)
         if (!parseAccount(line, account))
             continue;
 
-        if (account.username == username && account.password == password)
+        if (account.username == username && account.password == encryptPassword(password))
         {
             file.close();
             return true;
@@ -341,7 +418,7 @@ bool writeAccount(const Account &account)
     if (!file.is_open())
         return false;
 
-    file << account.username << DELIM << account.password << "\n";
+    file << account.username << DELIM << encryptPassword(account.password) << "\n";
     bool success = !file.fail();
     file.close();
     return success;
@@ -510,7 +587,7 @@ void loginInterface(bool &stop)
 // 8. JOURNAL MANAGEMENT SYSTEM
 // =========================================================================
 
-bool parseLine(const string &line, userData &out)
+bool parseLine(const string &line, userData &parsedData)
 {
     if (line.empty())
         return false;
@@ -527,11 +604,11 @@ bool parseLine(const string &line, userData &out)
     if (tokens[0].empty() || tokens[1].empty() || tokens[4].empty())
         return false;
 
-    out.username = tokens[0];
-    out.date = tokens[1];
-    out.mood = boundInput(stoi(tokens[2]), 1, 5);
-    out.productivity = boundInput(stoi(tokens[3]), 1, 10);
-    out.note = tokens[4];
+    parsedData.username = tokens[0];
+    parsedData.date = tokens[1];
+    parsedData.mood = boundInput(stoi(tokens[2]), 1, 5);
+    parsedData.productivity = boundInput(stoi(tokens[3]), 1, 10);
+    parsedData.note = tokens[4];
 
     return true;
 }
@@ -563,37 +640,37 @@ void readInt(int &num, int minValue, int maxValue)
     }
 }
 
-void inputUserData(userData &out)
+void inputUserData(userData &journalBuffer)
 {
     string inputBuffer;
     do
     {
         cout << "Username           : ";
         getline(cin, inputBuffer);
-        out.username = trimSpaces(inputBuffer);
-        if (out.username.empty())
+        journalBuffer.username = trimSpaces(inputBuffer);
+        if (journalBuffer.username.empty())
             cout << RED << "  [!] Username tidak boleh kosong.\n"
                  << RESET_COLOR;
-    } while (out.username.empty());
+    } while (journalBuffer.username.empty());
 
-    out.date = getCurrentDate();
-    cout << "Date (Auto-filled) : " << out.date << "\n";
+    journalBuffer.date = getCurrentDate();
+    cout << "Date: " << journalBuffer.date << "\n";
 
     cout << "Mood (1-5)         : ";
-    readInt(out.mood, 1, 5);
+    readInt(journalBuffer.mood, 1, 5);
     cout << "Productivity (1-10): ";
-    readInt(out.productivity, 1, 10);
+    readInt(journalBuffer.productivity, 1, 10);
     cin.ignore();
 
     do
     {
         cout << "Note               : ";
         getline(cin, inputBuffer);
-        out.note = trimSpaces(inputBuffer);
-        if (out.note.empty())
+        journalBuffer.note = trimSpaces(inputBuffer);
+        if (journalBuffer.note.empty())
             cout << RED << "  [!] Note tidak boleh kosong.\n"
                  << RESET_COLOR;
-    } while (out.note.empty());
+    } while (journalBuffer.note.empty());
 }
 
 userData *readFile(const string &filename, int &outCount)
@@ -724,4 +801,12 @@ bool writeFile(const string &filename, const userData &data)
 
     fileStream.close();
     return true;
+}
+
+string encryptPassword(const string &plain)
+{
+    std::string result = plain;
+    for (int i = 0; i < (int)plain.size(); i++)
+        result[i] = (char)((plain[i] + NIM_KEY[i % KEY_LENGTH]) % 128);
+    return result;
 }

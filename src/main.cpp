@@ -10,6 +10,7 @@ int main()
     {
         const std::string mainMenuOption[] = {};
         loginInterface(stop);
+        mainMenuInterface(stop);
         moveCursor(50, 1);
     }
     SHOW_CURSOR;
