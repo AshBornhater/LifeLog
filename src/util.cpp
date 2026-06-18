@@ -902,6 +902,33 @@ void searchMenu(const string &filename) {
 	} while(choice != 5);
 }
 
+void printUserJournal(const string &filename, const string &targetUsername)
+{
+    int matchCount = 0;
+    userData *matchedRecords = searchByUsername(filename, targetUsername, matchCount);
+
+    if (matchCount < 0)
+        return;
+
+    if (matchCount == 0)
+    {
+        cout << "Tidak ada journal untuk user '" << targetUsername << "'.\n";
+    }
+    else
+    {
+        cout << "\n=== Journal milik " << targetUsername << " ===\n";
+        for (int idx = 0; idx < matchCount; idx++)
+        {
+            cout << "\n--- Journal " << idx + 1 << " ---\n";
+            cout << "Date        : " << matchedRecords[idx].date << "\n";
+            cout << "Mood        : " << matchedRecords[idx].mood << "\n";
+            cout << "Productivity: " << matchedRecords[idx].productivity << "\n";
+            cout << "Note        : " << matchedRecords[idx].note << "\n";
+        }
+    }
+    delete[] matchedRecords;
+}
+
 bool writeFile(const string &filename, const userData &data)
 {
     ofstream fileStream(filename, ios::app);
