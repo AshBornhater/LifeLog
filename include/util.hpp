@@ -1,6 +1,5 @@
 #pragma once
 
-// =========================================================================
 // 1. HEADERS, MACROS, AND NAMESPACE DECLARATIONS
 // =========================================================================
 #include <iostream>
@@ -41,105 +40,92 @@ using std::size_t;
 using std::stoi;
 using std::string;
 
+// 2. CONSTANTS FOR ENCRYPTION KEY
 // =========================================================================
-// 2. DATA STRUCTURES DEFINITIONS
+constexpr int NIM_KEY[] = {67, 64, 100, 104, 129, 81, 29};
+constexpr int KEY_LENGTH = 7;
+
+// 3. STRUCT DEFINITIONS AND GLOBAL VARIABLE
 // =========================================================================
 
 struct userData
 {
-    std::string username;
-    std::string date;
+    string username;
+    string date;
     int mood;
     int productivity;
-    std::string note;
+    string note;
 };
 
 struct Account
 {
-    std::string username;
-    std::string password;
+    string username;
+    string password;
 };
 
-// =========================================================================
-// 3. LOW-LEVEL TERMINAL & OS UTILITIES (CROSS-PLATFORM)
+// 4. FUNCTION PROTOTYPES
 // =========================================================================
 
+// Low-Level Terminal Utilities
 int getCh();
 int getKey();
 void moveCursor(int row, int col);
 
-// =========================================================================
-// 4. STRING & DATETIME MANIPULATION UTILS
-// =========================================================================
-
+// String & Datetime Manipulations
 int boundInput(int val, int low, int high);
-std::string trimSpaces(const std::string &src);
-std::string nextToken(const std::string &line, std::size_t &position);
-std::string getCurrentDate(); // Disinkronkan dengan penambahan fitur real-time date kemarin
+string trimSpaces(const string &src);
+string nextToken(const string &line, size_t &position);
+string getCurrentDate();
 
-// =========================================================================
-// 5. UI COMPONENTS & RENDERING UTILS
-// =========================================================================
-
+// UI Components & Rendering
 void drawBorder(int startRow, int startCol, int height, int width);
 void drawLifeLogLogoLogin(int startRow, int startCol);
+void mainMenuInterface(bool &stop);
 void textField();
-void drawOption(const std::string *arrOptions, int optionslength, int userChoose);
 void drawOption(const string *arrOptions, int optionslength, int userChoose, int borderHeight);
 
-// =========================================================================
-// 6. MEMORY MANAGEMENT UTILS
-// =========================================================================
-
+// Memory Management
 userData *resizeRecords(userData *oldArr, int oldSize, int newSize);
 
-// =========================================================================
-// 7. AUTHENTICATION SYSTEMS
-// =========================================================================
-
+// Authentication System
 bool parseAccount(const string &line, Account &parsedData);
-bool login(const std::string &username, const std::string &password);
-bool usernameExists(const std::string &username);
+bool login(const string &username, const string &password);
+bool usernameExists(const string &username);
 bool writeAccount(const Account &account);
+string encryptPassword(const string &plain);
 
-// =========================================================================
-// 8. UI & MENUS FLOWS
-// =========================================================================
-
+// UI & Menus Flows
 bool loginMenu();
 bool registerMenu();
 void loginInterface(bool &stop);
-void mainMenuInterface(bool &stop);
 
-// =========================================================================
-// 9. JOURNAL MANAGEMENT SYSTEM
-// =========================================================================
-
-bool parseLine(const std::string &line, userData &parsedData);
+//  Data I/O Management System
+bool parseLine(const string &line, userData &parsedData);
 void readInt(int &num, int minValue, int maxValue);
-void inputUserData(userData &journalBUffer);
-userData *readFile(const std::string &filename, int &outCount);
-userData *searchByUsername(const std::string &filename, const std::string &targetUsername, int &outCount);
-void printUserJournal(const std::string &filename, const std::string &targetUsername);
-bool writeFile(const std::string &filename, const userData &data);
+userData *readFile(const string &filename, int &outCount);
 
-constexpr int NIM_KEY[] = {67, 64, 100, 104, 129, 81, 29};
-constexpr int KEY_LENGTH = 7;
+// Journal Search Functions
+userData *searchByUsername(const string &filename, const string &targetUsername, int &outCount); // Penyebab Linker Error Kemarin
+userData *searchByDate(const string &filename, const string &targetDate, int &outCount);
+userData *searchByMoodCategory(const string &filename, int categoryOption, int &outCount);
+userData *searchByProductivity(const string &filename, int targetProd, int &outCount);
+userData *searchByKeyword(const string &filename, const string &keyword, int &outCount);
 
-string encryptPassword(const string &plain);
+// Journal Actions & Menus
+void searchMenu(const string &filename);
+void printUserJournal(const string &filename);
+bool writeFile(const string &filename, const userData &data);
+bool deleteJournal(const string &filename, const string &targetUsername, int journalNumber);
+void printAllJournal(const string &filename);
 
-// MENU JURNAL HARIAN
+// Application Screens
 void jurnalHarian();
-// sub menu JURNAL HARIAN
 void tulisJurnal();
 void tampilkanSemuaJurnal();
 void cariJurnal();
 void hapusJurnal();
 
-// MENU LAINNYA
 void statistik();
 void achievement();
 void profilAkun();
 void about();
-
-

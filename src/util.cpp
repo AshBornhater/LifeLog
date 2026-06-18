@@ -93,11 +93,14 @@ void moveCursor(int row, int col)
     cout << "\033[" << row << ";" << col << "H";
 }
 
+void clearInputBuffer()
+{
+    cin.ignore(1000000, '\n');
+}
+
 // =========================================================================
 // 3. STRING & DATETIME MANIPULATION UTILS
 // =========================================================================
-string currentUser;
-
 int boundInput(int val, int low, int high)
 {
     if (val < low)
@@ -163,7 +166,7 @@ void drawBorder(int startRow, int startCol, int height, int width)
                 else
                     cout << "=";
             }
-         
+
             else
             {
                 if (j == 1)
@@ -196,7 +199,6 @@ void drawLifeLogLogoLogin(int startRow, int startCol)
     cout << "                              __/ |";
     moveCursor(startRow + 7, startCol);
     cout << "                             |___/";
-
 }
 
 void mainMenuInterface(bool &stop)
@@ -243,11 +245,10 @@ void mainMenuInterface(bool &stop)
                 about();
                 break;
             case 5:
-                  stop = true;
+                stop = true;
                 SHOW_CURSOR;
                 CLEAR_SCREEN;
                 return;
-              
             }
         }
     }
@@ -404,6 +405,7 @@ bool writeAccount(const Account &account)
 // =========================================================================
 // 7. UI & MENUS FLOWS
 // =========================================================================
+string currentUser;
 
 bool loginMenu()
 {
@@ -590,17 +592,17 @@ bool parseLine(const string &line, userData &parsedData)
     return true;
 }
 
-void readInt(int &num, int minValue, int maxValue)
+void readInt(int &num, int minValue, int maxValue, const string instruction)
 {
     while (true)
     {
+        cout << instruction;
         cin >> num;
         if (cin.fail() || cin.peek() != '\n')
         {
             cout << RED << "  [!] Input tidak valid, masukkan angka bulat." << RESET_COLOR << "\n";
             cin.clear();
-            while (cin.get() != '\n')
-                ;
+            clearInputBuffer();
             continue;
         }
         if (num < minValue)
@@ -615,39 +617,6 @@ void readInt(int &num, int minValue, int maxValue)
         }
         break;
     }
-}
-
-void inputUserData(userData &journalBuffer)
-{
-    string inputBuffer;
-    do
-    {
-        cout << "Username           : ";
-        getline(cin, inputBuffer);
-        journalBuffer.username = trimSpaces(inputBuffer);
-        if (journalBuffer.username.empty())
-            cout << RED << "  [!] Username tidak boleh kosong.\n"
-                 << RESET_COLOR;
-    } while (journalBuffer.username.empty());
-
-    journalBuffer.date = getCurrentDate();
-    cout << "Date: " << journalBuffer.date << "\n";
-
-    cout << "Mood (1-5)         : ";
-    readInt(journalBuffer.mood, 1, 5);
-    cout << "Productivity (1-10): ";
-    readInt(journalBuffer.productivity, 1, 10);
-    cin.ignore();
-
-    do
-    {
-        cout << "Note               : ";
-        getline(cin, inputBuffer);
-        journalBuffer.note = trimSpaces(inputBuffer);
-        if (journalBuffer.note.empty())
-            cout << RED << "  [!] Note tidak boleh kosong.\n"
-                 << RESET_COLOR;
-    } while (journalBuffer.note.empty());
 }
 
 userData *readFile(const string &filename, int &outCount)
@@ -687,11 +656,14 @@ userData *readFile(const string &filename, int &outCount)
     return records;
 }
 
-userData *searchByDate(const string &filename, const string &targetDate, int &outCount)
+userData *searchByUsername(const string &filename, const string &targetUsername, int &outCount)
 {
     ifstream fileStream(filename);
-    if (!fileStream.is_open()) {
-        outCount = -1; return nullptr;
+    if (!fileStream.is_open())
+    {
+        cout << RED << "[searchByUsername] Tidak bisa membuka '" << filename << "'" << RESET_COLOR << "\n";
+        outCount = -1;
+        return nullptr;
     }
 
     int capacity = 8;
@@ -701,14 +673,56 @@ userData *searchByDate(const string &filename, const string &targetDate, int &ou
 
     while (getline(fileStream, currentLine))
     {
-        if (currentLine.empty()) continue;
+        if (currentLine.empty())
+            continue;
 
         userData parsedRecord;
-        if (!parseLine(currentLine, parsedRecord)) continue;
+        if (!parseLine(currentLine, parsedRecord))
+            continue;
+
+        if (parsedRecord.username == targetUsername)
+        {
+            if (matchCount == capacity)
+            {
+                capacity *= 2;
+                matchedRecords = resizeRecords(matchedRecords, matchCount, capacity);
+            }
+            matchedRecords[matchCount++] = parsedRecord;
+        }
+    }
+
+    fileStream.close();
+    outCount = matchCount;
+    return matchedRecords;
+}
+
+userData *searchByDate(const string &filename, const string &targetDate, int &outCount)
+{
+    ifstream fileStream(filename);
+    if (!fileStream.is_open())
+    {
+        outCount = -1;
+        return nullptr;
+    }
+
+    int capacity = 8;
+    int matchCount = 0;
+    userData *matchedRecords = new userData[capacity];
+    string currentLine;
+
+    while (getline(fileStream, currentLine))
+    {
+        if (currentLine.empty())
+            continue;
+
+        userData parsedRecord;
+        if (!parseLine(currentLine, parsedRecord))
+            continue;
 
         if (parsedRecord.date == targetDate)
         {
-            if (matchCount == capacity) {
+            if (matchCount == capacity)
+            {
                 capacity *= 2;
                 matchedRecords = resizeRecords(matchedRecords, matchCount, capacity);
             }
@@ -723,8 +737,10 @@ userData *searchByDate(const string &filename, const string &targetDate, int &ou
 userData *searchByMoodCategory(const string &filename, int categoryOption, int &outCount)
 {
     ifstream fileStream(filename);
-    if (!fileStream.is_open()) {
-        outCount = -1; return nullptr;
+    if (!fileStream.is_open())
+    {
+        outCount = -1;
+        return nullptr;
     }
 
     int capacity = 8;
@@ -734,19 +750,25 @@ userData *searchByMoodCategory(const string &filename, int categoryOption, int &
 
     while (getline(fileStream, currentLine))
     {
-        if (currentLine.empty()) continue;
+        if (currentLine.empty())
+            continue;
 
         userData parsedRecord;
-        if (!parseLine(currentLine, parsedRecord)) continue;
+        if (!parseLine(currentLine, parsedRecord))
+            continue;
 
         bool isMatch = false;
-        if (categoryOption == 1 && parsedRecord.mood < 3)  isMatch = true; 
-        if (categoryOption == 2 && parsedRecord.mood == 3) isMatch = true; 
-        if (categoryOption == 3 && parsedRecord.mood > 3)  isMatch = true; 
+        if (categoryOption == 1 && parsedRecord.mood < 3)
+            isMatch = true;
+        if (categoryOption == 2 && parsedRecord.mood == 3)
+            isMatch = true;
+        if (categoryOption == 3 && parsedRecord.mood > 3)
+            isMatch = true;
 
         if (isMatch)
         {
-            if (matchCount == capacity) {
+            if (matchCount == capacity)
+            {
                 capacity *= 2;
                 matchedRecords = resizeRecords(matchedRecords, matchCount, capacity);
             }
@@ -761,8 +783,10 @@ userData *searchByMoodCategory(const string &filename, int categoryOption, int &
 userData *searchByProductivity(const string &filename, int targetProd, int &outCount)
 {
     ifstream fileStream(filename);
-    if (!fileStream.is_open()) {
-        outCount = -1; return nullptr;
+    if (!fileStream.is_open())
+    {
+        outCount = -1;
+        return nullptr;
     }
 
     int capacity = 8;
@@ -772,14 +796,17 @@ userData *searchByProductivity(const string &filename, int targetProd, int &outC
 
     while (getline(fileStream, currentLine))
     {
-        if (currentLine.empty()) continue;
+        if (currentLine.empty())
+            continue;
 
         userData parsedRecord;
-        if (!parseLine(currentLine, parsedRecord)) continue;
+        if (!parseLine(currentLine, parsedRecord))
+            continue;
 
         if (parsedRecord.productivity == targetProd)
         {
-            if (matchCount == capacity) {
+            if (matchCount == capacity)
+            {
                 capacity *= 2;
                 matchedRecords = resizeRecords(matchedRecords, matchCount, capacity);
             }
@@ -794,8 +821,10 @@ userData *searchByProductivity(const string &filename, int targetProd, int &outC
 userData *searchByKeyword(const string &filename, const string &keyword, int &outCount)
 {
     ifstream fileStream(filename);
-    if (!fileStream.is_open()) {
-        outCount = -1; return nullptr;
+    if (!fileStream.is_open())
+    {
+        outCount = -1;
+        return nullptr;
     }
 
     int capacity = 8;
@@ -805,14 +834,17 @@ userData *searchByKeyword(const string &filename, const string &keyword, int &ou
 
     while (getline(fileStream, currentLine))
     {
-        if (currentLine.empty()) continue;
+        if (currentLine.empty())
+            continue;
 
         userData parsedRecord;
-        if (!parseLine(currentLine, parsedRecord)) continue;
+        if (!parseLine(currentLine, parsedRecord))
+            continue;
 
         if (parsedRecord.note.find(keyword) != string::npos)
         {
-            if (matchCount == capacity) {
+            if (matchCount == capacity)
+            {
                 capacity *= 2;
                 matchedRecords = resizeRecords(matchedRecords, matchCount, capacity);
             }
@@ -824,108 +856,126 @@ userData *searchByKeyword(const string &filename, const string &keyword, int &ou
     return matchedRecords;
 }
 
-void searchMenu(const string &filename) {
-	int choice;
-	do {
-		cout << "\n===== SEARCH MENU =====\n";
-		cout << "1. Cari berdasarkan tanggal\n";
-		cout << "2. Cari berdasarkan mood (Kategori)\n";
-		cout << "3. Cari berdasarkan produktivitas\n";
-		cout << "4. Cari berdasarkan kata\n";
-		cout << "5. Kembali\n";
-		cout << "Pilihan (1-5): ";
-		
-		readInt(choice, 1, 5); 
+void searchMenu(const string &filename)
+{
+    int choice;
+    do
+    {
+        cout << "\n===== SEARCH MENU =====\n";
+        cout << "1. Cari berdasarkan tanggal\n";
+        cout << "2. Cari berdasarkan mood (Kategori)\n";
+        cout << "3. Cari berdasarkan produktivitas\n";
+        cout << "4. Cari berdasarkan kata\n";
+        cout << "5. Kembali\n";
 
-		userData *matchedRecords = nullptr;
-		int matchCount = 0;
+        readInt(choice, 1, 5, "Pilihan (1-5): ");
 
-		switch(choice) {
-			case 1: {
-				string targetDate;
-				cout << "\nMasukkan tanggal (YYYY-MM-DD): ";
-				cin.ignore();
-				getline(cin, targetDate);
-				matchedRecords = searchByDate(filename, targetDate, matchCount);
-				break;
-			}
-			case 2: {
-				int moodChoice;
-				cout << "\nPilih Kategori Mood:\n";
-				cout << "1. Mood Buruk (< 3)\n";
-				cout << "2. Mood Biasa (== 3)\n";
-				cout << "3. Mood Bagus (> 3)\n";
-				cout << "Pilihan Kategori (1-3): ";
-				readInt(moodChoice, 1, 3);
-				matchedRecords = searchByMoodCategory(filename, moodChoice, matchCount);
-				break;
-			}
-			case 3: {
-				int targetProd;
-				cout << "\nMasukkan produktivitas (1-10): ";
-				readInt(targetProd, 1, 10);
-				matchedRecords = searchByProductivity(filename, targetProd, matchCount);
-				break;
-			}
-			case 4: {
-				string keyword;
-				cout << "\nMasukkan keyword: ";
-				cin.ignore();
-				getline(cin, keyword);
-				matchedRecords = searchByKeyword(filename, keyword, matchCount);
-				break;
-			}
-			case 5:
-				cout << "\nKembali ke menu utama...\n";
-				continue; 
-		}
+        userData *matchedRecords = nullptr;
+        int matchCount = 0;
 
-		if (matchCount < 0) {
-			cout << RED << "[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR << "\n";
-		}
-		else if (matchCount == 0) {
-			cout << "\nData tidak ditemukan.\n";
-		}
-		else {
-			cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n\n";
-			for (int i = 0; i < matchCount; i++) {
-				cout << "username     = \"" << matchedRecords[i].username << "\";\n";
-				cout << "date         = \"" << matchedRecords[i].date << "\";\n";
-				cout << "mood         = " << matchedRecords[i].mood << ";\n";
-				cout << "productivity = " << matchedRecords[i].productivity << ";\n";
-				cout << "note         = \"" << matchedRecords[i].note << "\";\n";
-				cout << "--------------------------\n";
-			}
-		}
-	    delete[] matchedRecords;
+        switch (choice)
+        {
+        case 1:
+        {
+            string targetDate;
+            cout << "\nMasukkan tanggal (YYYY-MM-DD): ";
+            clearInputBuffer();
+            getline(cin, targetDate);
+            matchedRecords = searchByDate(filename, targetDate, matchCount);
+            break;
+        }
+        case 2:
+        {
+            int moodChoice;
+            cout << "\nPilih Kategori Mood:\n";
+            cout << "1. Mood Buruk (< 3)\n";
+            cout << "2. Mood Biasa (== 3)\n";
+            cout << "3. Mood Bagus (> 3)\n";
+            readInt(moodChoice, 1, 3, "Pilihan Kategori (1-3): ");
+            matchedRecords = searchByMoodCategory(filename, moodChoice, matchCount);
+            break;
+        }
+        case 3:
+        {
+            int targetProd;
+            readInt(targetProd, 1, 10, "\nMasukkan produktivitas (1-10): ");
+            matchedRecords = searchByProductivity(filename, targetProd, matchCount);
+            break;
+        }
+        case 4:
+        {
+            string keyword;
+            cout << "\nMasukkan keyword: ";
+            clearInputBuffer();
+            getline(cin, keyword);
+            matchedRecords = searchByKeyword(filename, keyword, matchCount);
+            break;
+        }
+        case 5:
+            cout << "\nKembali ke menu utama...\n";
+            continue;
+        }
 
-	} while(choice != 5);
+        if (matchCount < 0)
+        {
+            cout << RED << "[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR << "\n";
+        }
+        else if (matchCount == 0)
+        {
+            cout << "\nData tidak ditemukan.\n";
+        }
+        else
+        {
+            cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n\n";
+            for (int i = 0; i < matchCount; i++)
+            {
+                cout << "username     = \"" << matchedRecords[i].username << "\";\n";
+                cout << "date         = \"" << matchedRecords[i].date << "\";\n";
+                cout << "mood         = " << matchedRecords[i].mood << ";\n";
+                cout << "productivity = " << matchedRecords[i].productivity << ";\n";
+                cout << "note         = \"" << matchedRecords[i].note << "\";\n";
+                cout << "--------------------------\n";
+            }
+        }
+        delete[] matchedRecords;
+
+    } while (choice != 5);
 }
 
-void printUserJournal(const string &filename, const string &targetUsername)
+void printUserJournal(const string &filename)
 {
     int matchCount = 0;
-    userData *matchedRecords = searchByUsername(filename, targetUsername, matchCount);
+    userData *matchedRecords =
+        searchByUsername(filename, currentUser, matchCount);
 
     if (matchCount < 0)
         return;
 
     if (matchCount == 0)
     {
-        cout << "Tidak ada journal untuk user '" << targetUsername << "'.\n";
+        cout << "Anda belum memiliki jurnal.\n";
     }
     else
     {
-        cout << "\n=== Journal milik " << targetUsername << " ===\n";
+        cout << "\n=== Journal milik " << currentUser << " ===\n";
+
         for (int idx = 0; idx < matchCount; idx++)
         {
             cout << "\n--- Journal " << idx + 1 << " ---\n";
-            cout << "Date        : " << matchedRecords[idx].date << "\n";
-            cout << "Mood        : " << matchedRecords[idx].mood << "\n";
-            cout << "Productivity: " << matchedRecords[idx].productivity << "\n";
-            cout << "Note        : " << matchedRecords[idx].note << "\n";
+            cout << "Date        : "
+                 << matchedRecords[idx].date << "\n";
+
+            cout << "Mood        : "
+                 << matchedRecords[idx].mood << "\n";
+
+            cout << "Productivity: "
+                 << matchedRecords[idx].productivity << "\n";
+
+            cout << "Note        : "
+                 << matchedRecords[idx].note << "\n";
         }
     }
+
     delete[] matchedRecords;
 }
 
@@ -980,7 +1030,8 @@ bool deleteJournal(const string &filename, const string &targetUsername, int jou
         }
     }
 
-    if (targetIndex == -1){
+    if (targetIndex == -1)
+    {
         delete[] allRecords;
         return false;
     }
@@ -995,7 +1046,7 @@ bool deleteJournal(const string &filename, const string &targetUsername, int jou
     for (int i = 0; i < totalCount; i++)
     {
         if (i == targetIndex)
-        continue;
+            continue;
 
         fileStream << allRecords[i].username << DELIM
                    << allRecords[i].date << DELIM
@@ -1009,33 +1060,6 @@ bool deleteJournal(const string &filename, const string &targetUsername, int jou
     return true;
 }
 
-void printAllJournal(const string &filename)
-{
-    int totalCount = 0;
-    userData *allRecords = readFile(filename, totalCount);
-
-    if (totalCount < 0)
-        return;
-    
-    if (totalCount == 0)
-    {
-        cout << "Belum ada journal sama sekali.\n";
-    }
-    else
-    {
-        cout << "\n=== Semua Journal (Semua User) ===\n";
-        for (int idx = 0; idx < totalCount; idx++)
-        {
-            cout << "\n--- Journal " << idx + 1 << " ---\n";
-            cout << "Username       : " << allRecords[idx].username << "\n";
-            cout << "Date           : " << allRecords[idx].date << "\n";
-            cout << "Mood           : " << allRecords[idx].mood << "\n";
-            cout << "Productivity   : " << allRecords[idx].productivity << "\n";
-            cout << "Note           : " << allRecords[idx].note << "\n";
-        }
-    }
-    delete[] allRecords;
-}
 string encryptPassword(const string &plain)
 {
     std::string result = plain;
@@ -1052,38 +1076,41 @@ void jurnalHarian()
     const int jurnalMenuOptionLength = 5;
 
     bool running = true;
-    while (running){
+    while (running)
+    {
         CLEAR_SCREEN;
         HIDE_CURSOR;
         drawOption(jurnalMenuOption, jurnalMenuOptionLength, menuChoice, 35);
 
         int key = getKey();
-        switch (key){
-            case 72:
-                menuChoice = (menuChoice == 0) ? jurnalMenuOptionLength -1 : menuChoice -1;
+        switch (key)
+        {
+        case 72:
+            menuChoice = (menuChoice == 0) ? jurnalMenuOptionLength - 1 : menuChoice - 1;
+            break;
+        case 80:
+            menuChoice = (menuChoice == jurnalMenuOptionLength - 1) ? 0 : menuChoice + 1;
+            break;
+        case 13:
+            switch (menuChoice)
+            {
+            case 0:
+                tulisJurnal();
                 break;
-            case 80:
-                menuChoice = (menuChoice == jurnalMenuOptionLength - 1) ? 0 : menuChoice + 1;
+            case 1:
+                tampilkanSemuaJurnal();
                 break;
-            case 13:
-                switch (menuChoice){
-                case 0:
-                    tulisJurnal();
-                    break;
-                case 1:
-                    tampilkanSemuaJurnal();
-                    break;
-                case 2:
-                    cariJurnal();
-                    break;
-                case 3:
-                    hapusJurnal();
-                    break;
-                case 4:
-                    running = false;
-                    break;
-                }
+            case 2:
+                cariJurnal();
                 break;
+            case 3:
+                hapusJurnal();
+                break;
+            case 4:
+                running = false;
+                break;
+            }
+            break;
         }
     }
 }
@@ -1094,7 +1121,7 @@ void tulisJurnal()
     CLEAR_SCREEN;
     SHOW_CURSOR;
 
-    cout << CYAN << "===== TULIS JURNAL =====" << RESET_COLOR << "\n\n";
+    cout << CYAN << "======== TULIS JURNAL ========" << RESET_COLOR << "\n\n";
 
     userData journalBuffer;
     journalBuffer.username = currentUser;
@@ -1102,11 +1129,12 @@ void tulisJurnal()
 
     cout << "Username           : " << journalBuffer.username << "\n";
     cout << "Date               : " << journalBuffer.date << "\n";
-    cout << "Mood (1-5)         : ";
-    readInt(journalBuffer.mood, 1, 5);
-    cout << "Productivity (1-10): ";
-    readInt(journalBuffer.productivity, 1, 10);
-    cin.ignore();
+
+    readInt(journalBuffer.mood, 1, 5, "Mood (1-5)         : ");
+
+    readInt(journalBuffer.productivity, 1, 10, "Productivity (1-10): ");
+
+    clearInputBuffer();
 
     string noteBuffer;
     do
@@ -1115,10 +1143,11 @@ void tulisJurnal()
         getline(cin, noteBuffer);
         journalBuffer.note = trimSpaces(noteBuffer);
         if (journalBuffer.note.empty())
-            cout << RED << "  [!] Note tidak boleh kosong.\n" << RESET_COLOR;
+            cout << RED << "  [!] Note tidak boleh kosong.\n"
+                 << RESET_COLOR;
     } while (journalBuffer.note.empty());
 
-    if (writeFile("data/journals.txt", journalBuffer))
+    if (writeFile("data/userData.txt", journalBuffer))
         cout << GREEN << "\nJurnal berhasil disimpan." << RESET_COLOR << "\n";
     else
         cout << RED << "\nGagal menyimpan jurnal." << RESET_COLOR << "\n";
@@ -1130,20 +1159,15 @@ void tulisJurnal()
 
 void tampilkanSemuaJurnal()
 {
-
 }
 
 void cariJurnal()
 {
-
 }
 
 void hapusJurnal()
 {
-    
 }
-
-
 
 void statistik()
 {
