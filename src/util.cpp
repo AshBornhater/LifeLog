@@ -779,6 +779,87 @@ bool writeFile(const string &filename, const userData &data)
     return true;
 }
 
+bool deleteJournal(const string &filename, const string &targetUsername, int journalNumber)
+{
+    int totalCount = 0;
+    userData *allRecords = readFile(filename, totalCount);
+
+    if (totalCount <= 0)
+    {
+        delete[] allRecords;
+        return false;
+    }
+    int matchSeen = 0;
+    int targetIndex = -1;
+    for (int i = 0; i < totalCount; i++)
+    {
+        if (allRecords[i].username == targetUsername)
+        {
+            matchSeen++;
+            if (matchSeen == journalNumber)
+            {
+                targetIndex = i;
+                break;
+            }
+        }
+    }
+
+    if (targetIndex == -1){
+        delete[] allRecords;
+        return false;
+    }
+
+    ofstream fileStream(filename, ios::trunc);
+    if (!fileStream.is_open())
+    {
+        delete[] allRecords;
+        return false;
+    }
+
+    for (int i = 0; i < totalCount; i++)
+    {
+        if (i == targetIndex)
+        continue;
+
+        fileStream << allRecords[i].username << DELIM
+                   << allRecords[i].date << DELIM
+                   << allRecords[i].mood << DELIM
+                   << allRecords[i].productivity << DELIM
+                   << allRecords[i].note << "\n";
+    }
+
+    fileStream.close();
+    delete[] allRecords;
+    return true;
+}
+
+void printAllJournal(const string &filename)
+{
+    int totalCount = 0;
+    userData *allRecords = readFile(filename, totalCount);
+
+    if (totalCount < 0)
+        return;
+    
+    if (totalCount == 0)
+    {
+        cout << "Belum ada journal sama sekali.\n";
+    }
+    else
+    {
+        cout << "\n=== Semua Journal (Semua User) ===\n";
+        for (int idx = 0; idx < totalCount; idx++)
+        {
+            cout << "\n--- Journal " << idx + 1 << " ---\n";
+            cout << "Username       : " << allRecords[idx].username << "\n";
+            cout << "Date           : " << allRecords[idx].date << "\n";
+            cout << "Mood           : " << allRecords[idx].mood << "\n";
+            cout << "Productivity   : " << allRecords[idx].productivity << "\n";
+            cout << "Note           : " << allRecords[idx].note << "\n";
+        }
+    }
+    delete[] allRecords;
+}
 string encryptPassword(const string &plain)
 {
     std::string result = plain;
