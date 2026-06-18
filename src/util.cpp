@@ -1064,7 +1064,41 @@ void jurnalHarian()
 // sub menu JURNAL HARIAN
 void tulisJurnal()
 {
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
 
+    cout << CYAN << "===== TULIS JURNAL =====" << RESET_COLOR << "\n\n";
+
+    userData journalBuffer;
+    journalBuffer.username = currentUser;
+    journalBuffer.date = getCurrentDate();
+
+    cout << "Username           : " << journalBuffer.username << "\n";
+    cout << "Date               : " << journalBuffer.date << "\n";
+    cout << "Mood (1-5)         : ";
+    readInt(journalBuffer.mood, 1, 5);
+    cout << "Productivity (1-10): ";
+    readInt(journalBuffer.productivity, 1, 10);
+    cin.ignore();
+
+    string noteBuffer;
+    do
+    {
+        cout << "Note               : ";
+        getline(cin, noteBuffer);
+        journalBuffer.note = trimSpaces(noteBuffer);
+        if (journalBuffer.note.empty())
+            cout << RED << "  [!] Note tidak boleh kosong.\n" << RESET_COLOR;
+    } while (journalBuffer.note.empty());
+
+    if (writeFile("data/journals.txt", journalBuffer))
+        cout << GREEN << "\nJurnal berhasil disimpan." << RESET_COLOR << "\n";
+    else
+        cout << RED << "\nGagal menyimpan jurnal." << RESET_COLOR << "\n";
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
 
 void tampilkanSemuaJurnal()
