@@ -6,12 +6,15 @@
 int main()
 {
     bool stop = false;
+
     while (!stop)
     {
         loginInterface(stop);
-        mainMenuInterface(stop);
-        moveCursor(50, 1);
+
+        if (!stop)
+            mainMenuInterface(stop);
     }
+
     SHOW_CURSOR;
     return 0;
 }
