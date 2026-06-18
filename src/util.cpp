@@ -538,14 +538,12 @@ void loginInterface(bool &stop)
             case 0:
                 if (loginMenu())
                 {
-                    stop = true;
                     return;
                 }
                 break;
             case 1:
                 if (registerMenu())
                 {
-                    stop = true;
                     return;
                 }
                 break;
