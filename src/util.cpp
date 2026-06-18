@@ -96,6 +96,7 @@ void moveCursor(int row, int col)
 // =========================================================================
 // 3. STRING & DATETIME MANIPULATION UTILS
 // =========================================================================
+string currentUser;
 
 int boundInput(int val, int low, int high)
 {
