@@ -13,7 +13,6 @@
 #include <unistd.h>
 #endif
 
-#include "../include/util.hpp"
 
 #define BORDER_ROW 3
 #define BORDER_COLUMN 42
@@ -22,7 +21,7 @@
 
 #define RESET_COLOR "\033[0m"
 #define GREEN "\033[32m"
-#define CYAN "\033[36m"
+#define CYAN "\033[31m"
 #define YELLOW "\033[93m"
 #define RED "\033[31m"
 #define CLEAR_SCREEN cout << "\033[2J\033[H"
@@ -39,6 +38,25 @@ using std::ofstream;
 using std::size_t;
 using std::stoi;
 using std::string;
+
+
+struct userData
+{
+    std::string username;
+    std::string date;
+    int mood;
+    int productivity;
+    std::string note;
+};
+
+struct Account
+{
+    std::string username;
+    std::string password;
+};
+
+constexpr int NIM_KEY[] = {67, 64, 100, 104, 129, 81, 29};
+constexpr int KEY_LENGTH = 7;
 
 // =========================================================================
 // 2. LOW-LEVEL TERMINAL & OS UTILITIES (CROSS-PLATFORM)
@@ -180,29 +198,22 @@ void drawBorder(int startRow, int startCol, int height, int width)
 void drawLifeLogLogoLogin(int startRow, int startCol)
 {
     moveCursor(startRow, startCol);
-    cout << " _     _  __     _      ";
-    moveCursor(startRow + 1, startCol);
-    cout << "| |   (_)/ _|   | |   ";
-    moveCursor(startRow + 2, startCol);
-    cout << "| |    _| |_ ___| |     ___   __ _ ";
-    moveCursor(startRow + 3, startCol);
-    cout << "| |   | |  _/ _ \\ |    / _ \\ / _` |";
-    moveCursor(startRow + 4, startCol);
-    cout << "| |___| | ||  __/ |___| (_) | (_| |";
-    moveCursor(startRow + 5, startCol);
-    cout << "\\_____/_|_| \\___\\_____/\\___/ \\__, |";
-    moveCursor(startRow + 6, startCol);
-    cout << "                              __/ |";
-    moveCursor(startRow + 7, startCol);
-    cout << "                             |___/";
-
+    cout << R"(                                            
+▄▄▄           ▄▄       ▄▄▄                  
+███      ▀▀  ██        ███                  
+███      ██ ▀██▀ ▄█▀█▄ ███      ▄███▄ ▄████ 
+███      ██  ██  ██▄█▀ ███      ██ ██ ██ ██ 
+████████ ██▄ ██  ▀█▄▄▄ ████████ ▀███▀ ▀████ 
+                                         ██ 
+                                       ▀▀▀  )";
+  
 }
 
 void mainMenuInterface(bool &stop)
 {
     int menuChoice;
-    const string mainMenuOption[] = {"JURNAL HARIAN", "STATISTIK", "ACHIEVEMENT", "PROFIL AKUN", "ABOUT", "EXIT"};
-    const int mainMenuOptionLength = 6;
+    const string mainMenuOption[] = {"JURNAL HARIAN", "STATISTIK", "ACHIEVEMENT", "PROFIL AKUN", "ABOUT", "LOGOUT", "EXIT"};
+    const int mainMenuOptionLength = 7;
 
     CLEAR_SCREEN;
     HIDE_CURSOR;
@@ -212,7 +223,7 @@ void mainMenuInterface(bool &stop)
     while (running)
     {
         CLEAR_SCREEN;
-        drawOption(mainMenuOption, mainMenuOptionLength, menuChoice, 35);
+        drawOption(mainMenuOption, mainMenuOptionLength, menuChoice, 39);
 
         int key = getKey();
         switch (key)
@@ -227,26 +238,15 @@ void mainMenuInterface(bool &stop)
             switch (menuChoice)
             {
             case 0:
-                jurnalHarian();
+
                 break;
             case 1:
-                statistik();
-                break;
+
             case 2:
-                achievement();
-                break;
-            case 3:
-                profilAkun();
-                break;
-            case 4:
-                about();
-                break;
-            case 5:
-                  stop = true;
+                stop = true;
                 SHOW_CURSOR;
                 CLEAR_SCREEN;
                 return;
-              
             }
         }
     }
@@ -257,30 +257,60 @@ void textField()
     moveCursor(BORDER_ROW + 11, 53);
     cout << "Username:";
     moveCursor(BORDER_ROW + 12, 52);
-    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+";
+    cout << "┌─────────────────────────────────────────────────────────┐";
     moveCursor(BORDER_ROW + 13, 52);
-    cout << "|                                                         |";
+    cout << "│                                                         │";
     moveCursor(BORDER_ROW + 14, 52);
-    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+";
+    cout << "└─────────────────────────────────────────────────────────┘";
+
     moveCursor(BORDER_ROW + 16, 53);
     cout << "Password:";
     moveCursor(BORDER_ROW + 17, 52);
-    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+";
+    cout << "┌─────────────────────────────────────────────────────────┐";
     moveCursor(BORDER_ROW + 18, 52);
-    cout << "|                                                         |";
+    cout << "│                                                         │";
     moveCursor(BORDER_ROW + 19, 52);
-    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+";
+    cout << "└─────────────────────────────────────────────────────────┘";
+}
+
+void drawOption(const string *arrOptions, int optionslength, int userChoose)
+{
+    drawBorder(BORDER_ROW, BORDER_COLUMN, 22, 80);
+    int buttonrow = BORDER_ROW + 11, buttonColumn = BORDER_COLUMN + 26;
+    drawLifeLogLogoLogin(BORDER_ROW + 2, BORDER_COLUMN + 24);
+    for (int i = 0; i < optionslength; i++)
+    {
+        if (i == userChoose)
+            cout << YELLOW;
+        else
+            cout << RESET_COLOR;
+
+        int padTotal = 26;
+        int labelLen = arrOptions[i].length();
+        int padLeft = (padTotal - labelLen) / 2;
+        int padRight = padTotal - labelLen - padLeft;
+
+        moveCursor(buttonrow, buttonColumn);
+        cout << "============================";
+        moveCursor(buttonrow + 1, buttonColumn);
+        cout << "|" << string(padLeft, ' ') << arrOptions[i] << string(padRight, ' ') << "|";
+        moveCursor(buttonrow + 2, buttonColumn);
+        cout << "============================";
+
+        buttonrow += 4;
+    }
+    cout << RESET_COLOR;
 }
 
 void drawOption(const string *arrOptions, int optionslength, int userChoose, int borderHeight)
 {
     drawBorder(BORDER_ROW, BORDER_COLUMN, borderHeight, 80);
-    drawLifeLogLogoLogin(BORDER_ROW + 2, BORDER_COLUMN + 23);
     int buttonrow = BORDER_ROW + 11, buttonColumn = BORDER_COLUMN + 26;
+    drawLifeLogLogoLogin(BORDER_ROW + 2, BORDER_COLUMN + 24);
     for (int i = 0; i < optionslength; i++)
     {
         if (i == userChoose)
-            cout << CYAN;
+            cout << YELLOW;
         else
             cout << RESET_COLOR;
 
@@ -521,7 +551,7 @@ void loginInterface(bool &stop)
     while (running)
     {
         CLEAR_SCREEN;
-        drawOption(loginOption, loginOptionLength, menuChoice, 23);
+        drawOption(loginOption, loginOptionLength, menuChoice);
 
         int key = getKey();
         switch (key)
@@ -787,51 +817,17 @@ string encryptPassword(const string &plain)
     return result;
 }
 
-// MENU JURNAL HARIAN
-void jurnalHarian()
+
+int main()
 {
-    // TODO: Implementasi fitur jurnal harian
-}
-
-// sub menu JURNAL HARIAN
-void tulisJurnal()
-{
-
-}
-
-void tampilkanSemuaJurnal()
-{
-
-}
-
-void cariJurnal()
-{
-
-}
-
-void hapusJurnal()
-{
-    
-}
-
-
-
-void statistik()
-{
-    // TODO: Implementasi fitur statistik
-}
-
-void achievement()
-{
-    // TODO: Implementasi fitur achievement
-}
-
-void profilAkun()
-{
-    // TODO: Implementasi fitur profil akun
-}
-
-void about()
-{
-    // TODO: Implementasi informasi aplikasi
+    bool stop = false;
+    while (!stop)
+    {
+        const std::string mainMenuOption[] = {};
+        loginInterface(stop);
+        mainMenuInterface(stop);
+        moveCursor(50, 1);
+    }
+    SHOW_CURSOR;
+    return 0;
 }

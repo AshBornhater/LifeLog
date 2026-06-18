@@ -24,7 +24,7 @@
 
 #define RESET_COLOR "\033[0m"
 #define GREEN "\033[32m"
-#define CYAN "\033[31m"
+#define CYAN "\033[36m"
 #define YELLOW "\033[93m"
 #define RED "\033[31m"
 #define CLEAR_SCREEN cout << "\033[2J\033[H"
@@ -127,3 +127,19 @@ constexpr int NIM_KEY[] = {67, 64, 100, 104, 129, 81, 29};
 constexpr int KEY_LENGTH = 7;
 
 string encryptPassword(const string &plain);
+
+// MENU JURNAL HARIAN
+void jurnalHarian();
+// sub menu JURNAL HARIAN
+void tulisJurnal();
+void tampilkanSemuaJurnal();
+void cariJurnal();
+void hapusJurnal();
+
+// MENU LAINNYA
+void statistik();
+void achievement();
+void profilAkun();
+void about();
+
+
