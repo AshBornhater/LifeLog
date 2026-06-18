@@ -427,6 +427,7 @@ bool loginMenu()
 
     if (login(username, password))
     {
+        currentUser = username;
         moveCursor(BORDER_ROW + 20, 53);
         cout << GREEN << "Login berhasil." << RESET_COLOR;
         moveCursor(BORDER_ROW + 21, 53);
@@ -488,6 +489,7 @@ bool registerMenu()
     }
     else if (writeAccount(account))
     {
+        currentUser = account.username;
         moveCursor(BORDER_ROW + 20, 53);
         cout << GREEN << "Register berhasil." << RESET_COLOR;
         moveCursor(BORDER_ROW + 21, 53);
@@ -1018,7 +1020,45 @@ string encryptPassword(const string &plain)
 // MENU JURNAL HARIAN
 void jurnalHarian()
 {
-    // TODO: Implementasi fitur jurnal harian
+    int menuChoice = 0;
+    const string jurnalMenuOption[] = {"Tulis Jurnal", "Lihat Semua Jurnal", "Cari Jurnal", "Hapus Jurnal", "Kembali"};
+    const int jurnalMenuOptionLength = 5;
+
+    bool running = true;
+    while (running){
+        CLEAR_SCREEN;
+        HIDE_CURSOR;
+        drawOption(jurnalMenuOption, jurnalMenuOptionLength, menuChoice, 35);
+
+        int key = getKey();
+        switch (key){
+            case 72:
+                menuChoice = (menuChoice == 0) ? jurnalMenuOptionLength -1 : menuChoice -1;
+                break;
+            case 80:
+                menuChoice = (menuChoice == jurnalMenuOptionLength - 1) ? 0 : menuChoice + 1;
+                break;
+            case 13:
+                switch (menuChoice){
+                case 0:
+                    tulisJurnal();
+                    break;
+                case 1:
+                    tampilkanSemuaJurnal();
+                    break;
+                case 2:
+                    cariJurnal();
+                    break;
+                case 3:
+                    hapusJurnal();
+                    break;
+                case 4:
+                    running = false;
+                    break;
+                }
+                break;
+        }
+    }
 }
 
 // sub menu JURNAL HARIAN
