@@ -1194,14 +1194,110 @@ void tulisJurnal()
 
 void tampilkanSemuaJurnal()
 {
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+
+    printUserJournal("data/journals.txt", currentUser);
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
 
 void cariJurnal()
 {
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+
+    cout << CYAN << "===== CARI JURNAL =====" << RESET_COLOR << "\n\n";
+    cout << "Masukkan tanggal / bagian tanggal (YYYY-MM-DD), kosongkan untuk semua: ";
+
+    string keyword;
+    getline(cin, keyword);
+    keyword = trimSpaces(keyword);
+
+    int matchCount = 0;
+    userData *userJournals = searchByUsername("data/journals.txt", currentUser, matchCount);
+
+    if (matchCount < 0)
+    {
+        cout << RED << "Gagal membaca data jurnal." << RESET_COLOR << "\n";
+    }
+    else
+    {
+        int found = 0;
+        for (int i = 0; i < matchCount; i++)
+        {
+            if (keyword.empty() || userJournals[i].date.find(keyword) != string::npos)
+            {
+                found++;
+                cout << "\n--- Journal " << found << " ---\n";
+                cout << "Date        : " << userJournals[i].date << "\n";
+                cout << "Mood        : " << userJournals[i].mood << "\n";
+                cout << "Productivity: " << userJournals[i].productivity << "\n";
+                cout << "Note        : " << userJournals[i].note << "\n";
+            }
+        }
+
+        if (found == 0)
+            cout << "\nTidak ada jurnal yang cocok dengan '" << keyword << "'.\n";
+    }
+
+    delete[] userJournals;
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
 
 void hapusJurnal()
 {
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+
+    int matchCount = 0;
+    userData *userJournals = searchByUsername("data/journals.txt", currentUser, matchCount);
+
+    if (matchCount <= 0)
+    {
+        cout << "Belum ada jurnal untuk dihapus.\n";
+        cout << "\nPRESS ANY KEY TO RETURN...";
+        delete[] userJournals;
+        HIDE_CURSOR;
+        getCh();
+        return;
+    }
+
+    cout << CYAN << "===== HAPUS JURNAL =====" << RESET_COLOR << "\n";
+    for (int i = 0; i < matchCount; i++)
+    {
+        cout << "\n--- Journal " << i + 1 << " ---\n";
+        cout << "Date        : " << userJournals[i].date << "\n";
+        cout << "Mood        : " << userJournals[i].mood << "\n";
+        cout << "Productivity: " << userJournals[i].productivity << "\n";
+        cout << "Note        : " << userJournals[i].note << "\n";
+    }
+    delete[] userJournals;
+
+    int journalNumber;
+    readInt(journalNumber, 0, matchCount, "\nMasukkan nomor jurnal yang ingin dihapus (0 untuk batal): ");
+
+    if (journalNumber == 0)
+    {
+        cout << "\nDibatalkan.\n";
+    }
+    else if (deleteJournal("data/journals.txt", currentUser, journalNumber))
+    {
+        cout << GREEN << "\nJurnal berhasil dihapus." << RESET_COLOR << "\n";
+    }
+    else
+    {
+        cout << RED << "\nGagal menghapus jurnal." << RESET_COLOR << "\n";
+    }
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
 
 void statistik()
