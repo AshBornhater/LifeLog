@@ -1016,28 +1016,36 @@ void printUserJournal(const string &filename)
 
 bool writeFile(const string &filename, const userData &data)
 {
-    ofstream fileStream(filename, ios::app);
+    int existingCount = 0;
+    userData *existingRecords = readFile(filename, existingCount);
+    if (existingCount < 0) existingCount = 0; // file belum ada = anggap kosong
+
+    ofstream fileStream(filename, ios::trunc);
     if (!fileStream.is_open())
     {
         cout << RED << "[writeFile] Tidak bisa membuka '" << filename << "'" << RESET_COLOR << "\n";
+        delete[] existingRecords;
         return false;
     }
 
+    for (int i = 0; i < existingCount; i++)
+    {
+        fileStream << existingRecords[i].username << DELIM
+                   << existingRecords[i].date << DELIM
+                   << existingRecords[i].mood << DELIM
+                   << existingRecords[i].productivity << DELIM
+                   << existingRecords[i].note << "\n";
+    }
     fileStream << data.username << DELIM
                << data.date << DELIM
                << data.mood << DELIM
                << data.productivity << DELIM
                << data.note << "\n";
 
-    if (fileStream.fail())
-    {
-        cout << RED << "[writeFile] Gagal menulis ke '" << filename << "'" << RESET_COLOR << "\n";
-        fileStream.close();
-        return false;
-    }
-
+    bool success = !fileStream.fail();
     fileStream.close();
-    return true;
+    delete[] existingRecords;
+    return success;
 }
 
 bool deleteJournal(const string &filename, const string &targetUsername, int journalNumber)
