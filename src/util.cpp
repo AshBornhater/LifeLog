@@ -1297,7 +1297,7 @@ void hapusJurnal()
     {
         cout << "\nDibatalkan.\n";
     }
-    else if (deleteJournal("data/userDatatxt", currentUser, journalNumber))
+    else if (deleteJournal("data/userData.txt", currentUser, journalNumber))
     {
         cout << GREEN << "\nJurnal berhasil dihapus." << RESET_COLOR << "\n";
     }
