@@ -108,6 +108,7 @@ int boundInput(int val, int low, int high)
     if (val > high)
         return high;
     return val;
+    cout << " ";
 }
 
 string trimSpaces(const string &src)
