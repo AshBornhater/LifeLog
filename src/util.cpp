@@ -857,7 +857,7 @@ userData *searchByKeyword(const string &filename, const string &keyword, int &ou
     return matchedRecords;
 }
 
-void searchMenu(const string &filename)
+void cariJurnal(const string &filename)
 {
     int choice;
     do
