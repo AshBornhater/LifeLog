@@ -702,6 +702,7 @@ userData *searchByDate(const string &filename, const string &targetDate, int &ou
     ifstream fileStream(filename);
     if (!fileStream.is_open())
     {
+        cout << RED << "[searchByDate] Tidak bisa membuka '" << filename << "'" << RESET_COLOR << "\n";
         outCount = -1;
         return nullptr;
     }
@@ -740,6 +741,7 @@ userData *searchByMoodCategory(const string &filename, int categoryOption, int &
     ifstream fileStream(filename);
     if (!fileStream.is_open())
     {
+        cout << RED << "[searchByMoodCategory] Tidak bisa membuka '" << filename << "'" << RESET_COLOR << "\n";
         outCount = -1;
         return nullptr;
     }
@@ -786,6 +788,7 @@ userData *searchByProductivity(const string &filename, int targetProd, int &outC
     ifstream fileStream(filename);
     if (!fileStream.is_open())
     {
+        cout << RED << "[searchByProductivity] Tidak bisa membuka '" << filename << "'" << RESET_COLOR << "\n";
         outCount = -1;
         return nullptr;
     }
@@ -824,6 +827,7 @@ userData *searchByKeyword(const string &filename, const string &keyword, int &ou
     ifstream fileStream(filename);
     if (!fileStream.is_open())
     {
+        cout << RED << "[searchByKeyword] Tidak bisa membuka '" << filename << "'" << RESET_COLOR << "\n";
         outCount = -1;
         return nullptr;
     }
@@ -876,6 +880,10 @@ void cariJurnal(const string &filename)
         HIDE_CURSOR;
         
         drawOption(searchMenuOption, searchMenuOptionLength, menuChoice, 35);
+        const string title = "Cari Jurnal";
+        int titlePad = (28 - (int)title.length()) / 2;
+        moveCursor(BORDER_ROW + 10, BORDER_COLUMN + 26 + titlePad);
+        cout << CYAN << title << RESET_COLOR;
 
         int key = getKey();
         switch (key)
@@ -887,55 +895,63 @@ void cariJurnal(const string &filename)
             menuChoice = (menuChoice == searchMenuOptionLength - 1) ? 0 : menuChoice + 1;
             break;
         case 13:
-            
-            SHOW_CURSOR; 
+        {
+            SHOW_CURSOR;
 
             userData *matchedRecords = nullptr;
             int matchCount = 0;
-            bool processSearch = false; 
+            bool processSearch = (menuChoice != 4);
 
-            cout << "\n\n"; 
+            if (processSearch)
+            {
+                CLEAR_SCREEN;
+                drawBorder(BORDER_ROW, BORDER_COLUMN, 30, 80);
+            }
 
             switch (menuChoice)
             {
             case 0: 
             {
                 string targetDate;
+                moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 3);
                 cout << "Masukkan tanggal (YYYY-MM-DD): ";
                 clearInputBuffer();
                 getline(cin, targetDate);
                 matchedRecords = searchByDate(filename, targetDate, matchCount);
-                processSearch = true;
                 break;
             }
             case 1: 
             {
                 int moodChoice;
-                cout << "Pilih Kategori Mood:\n";
-                cout << "1. Mood Buruk (< 3)\n";
-                cout << "2. Mood Biasa (== 3)\n";
-                cout << "3. Mood Bagus (> 3)\n";
+                moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 3);
+                cout << "Pilih Kategori Mood:";
+                moveCursor(BORDER_ROW + 3, BORDER_COLUMN + 3);
+                cout << "1. Mood Buruk (< 3)";
+                moveCursor(BORDER_ROW + 4, BORDER_COLUMN + 3);
+                cout << "2. Mood Biasa (== 3)";
+                moveCursor(BORDER_ROW + 5, BORDER_COLUMN + 3);
+                cout << "3. Mood Bagus (> 3)";
+                moveCursor(BORDER_ROW + 7, BORDER_COLUMN + 3);
                 readInt(moodChoice, 1, 3, "Pilihan Kategori (1-3): ");
                 matchedRecords = searchByMoodCategory(filename, moodChoice, matchCount);
-                processSearch = true;
                 break;
             }
             case 2: 
             {
                 int targetProd;
+                moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 3);
                 readInt(targetProd, 1, 10, "Masukkan produktivitas (1-10): ");
                 matchedRecords = searchByProductivity(filename, targetProd, matchCount);
-                processSearch = true;
                 break;
             }
             case 3: 
             {
                 string keyword;
+                moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 3);
                 cout << "Masukkan keyword: ";
                 clearInputBuffer();
                 getline(cin, keyword);
                 matchedRecords = searchByKeyword(filename, keyword, matchCount);
-                processSearch = true;
                 break;
             }
             case 4: 
@@ -945,38 +961,61 @@ void cariJurnal(const string &filename)
 
             if (processSearch)
             {
+                int row = BORDER_ROW + 8;
+                int col = BORDER_COLUMN + 3;
+
                 if (matchCount < 0)
                 {
-                    cout << RED << "\n[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR << "\n";
+                    moveCursor(row++, col);
+                    cout << RED << "[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR;
                 }
                 else if (matchCount == 0)
                 {
-                    cout << "\nData tidak ditemukan.\n";
+                    moveCursor(row++, col);
+                    cout << "Data tidak ditemukan.";
                 }
                 else
                 {
-                    cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n\n";
-                    for (int i = 0; i < matchCount; i++)
+                    moveCursor(row++, col);
+                    cout << "\"" << matchCount << " Jurnal Ditemukan\"";
+                    row++;
+
+                    int maxRow = BORDER_ROW + 30 - 3;
+                    for (int i = 0; i < matchCount && row <= maxRow - 5; i++)
                     {
-                        cout << "username     = \"" << matchedRecords[i].username << "\";\n";
-                        cout << "date         = \"" << matchedRecords[i].date << "\";\n";
-                        cout << "mood         = " << matchedRecords[i].mood << ";\n";
-                        cout << "productivity = " << matchedRecords[i].productivity << ";\n";
-                        cout << "note         = \"" << matchedRecords[i].note << "\";\n";
-                        cout << "--------------------------\n";
+                        moveCursor(row++, col);
+                        cout << "username     = \"" << matchedRecords[i].username << "\";";
+                        moveCursor(row++, col);
+                        cout << "date         = \"" << matchedRecords[i].date << "\";";
+                        moveCursor(row++, col);
+                        cout << "mood         = " << matchedRecords[i].mood << ";";
+                        moveCursor(row++, col);
+                        cout << "productivity = " << matchedRecords[i].productivity << ";";
+                        moveCursor(row++, col);
+                        cout << "note         = \"" << matchedRecords[i].note << "\";";
+                        moveCursor(row++, col);
+                        cout << "--------------------------";
+                    }
+
+                    if (row > maxRow - 5)
+                    {
+                        moveCursor(row++, col);
+                        cout << "... (hasil dipotong, terlalu banyak untuk ditampilkan)";
                     }
                 }
-                delete[] matchedRecords; 
-                
-                cout << "\nTekan Enter untuk kembali ke menu...";
+                delete[] matchedRecords;
+
+                moveCursor(BORDER_ROW + 30 - 2, col);
+                cout << "Tekan Enter untuk kembali ke menu...";
+                moveCursor(BORDER_ROW + 30, 1);
                 clearInputBuffer();
-                cin.get(); 
+                cin.get();
             }
             break;
         }
+        }
     }
 }
-
 void printUserJournal(const string &filename)
 {
     int matchCount = 0;
