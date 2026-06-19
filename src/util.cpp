@@ -857,90 +857,124 @@ userData *searchByKeyword(const string &filename, const string &keyword, int &ou
     return matchedRecords;
 }
 
-void searchMenu(const string &filename)
+void cariJurnal(const string &filename)
 {
-    int choice;
-    do
+    int menuChoice = 0;
+    const string searchMenuOption[] = {
+        "Cari Berdasarkan Tanggal", 
+        "Cari Berdasarkan Mood ", 
+        "Cari Produktivitas", 
+        "Cari Berdasarkan Kata", 
+        "Kembali"
+    };
+    const int searchMenuOptionLength = 5;
+
+    bool running = true;
+    while (running)
     {
-        cout << "\n===== SEARCH MENU =====\n";
-        cout << "1. Cari berdasarkan tanggal\n";
-        cout << "2. Cari berdasarkan mood (Kategori)\n";
-        cout << "3. Cari berdasarkan produktivitas\n";
-        cout << "4. Cari berdasarkan kata\n";
-        cout << "5. Kembali\n";
+        CLEAR_SCREEN; 
+        HIDE_CURSOR;
+        
+        drawOption(searchMenuOption, searchMenuOptionLength, menuChoice, 35);
 
-        readInt(choice, 1, 5, "Pilihan (1-5): ");
+        int key = getKey();
+        switch (key)
+        {
+        case 72: 
+            menuChoice = (menuChoice == 0) ? searchMenuOptionLength - 1 : menuChoice - 1;
+            break;
+        case 80: 
+            menuChoice = (menuChoice == searchMenuOptionLength - 1) ? 0 : menuChoice + 1;
+            break;
+        case 13:
+            
+            SHOW_CURSOR; 
 
-        userData *matchedRecords = nullptr;
-        int matchCount = 0;
+            userData *matchedRecords = nullptr;
+            int matchCount = 0;
+            bool processSearch = false; 
 
-        switch (choice)
-        {
-        case 1:
-        {
-            string targetDate;
-            cout << "\nMasukkan tanggal (YYYY-MM-DD): ";
-            clearInputBuffer();
-            getline(cin, targetDate);
-            matchedRecords = searchByDate(filename, targetDate, matchCount);
-            break;
-        }
-        case 2:
-        {
-            int moodChoice;
-            cout << "\nPilih Kategori Mood:\n";
-            cout << "1. Mood Buruk (< 3)\n";
-            cout << "2. Mood Biasa (== 3)\n";
-            cout << "3. Mood Bagus (> 3)\n";
-            readInt(moodChoice, 1, 3, "Pilihan Kategori (1-3): ");
-            matchedRecords = searchByMoodCategory(filename, moodChoice, matchCount);
-            break;
-        }
-        case 3:
-        {
-            int targetProd;
-            readInt(targetProd, 1, 10, "\nMasukkan produktivitas (1-10): ");
-            matchedRecords = searchByProductivity(filename, targetProd, matchCount);
-            break;
-        }
-        case 4:
-        {
-            string keyword;
-            cout << "\nMasukkan keyword: ";
-            clearInputBuffer();
-            getline(cin, keyword);
-            matchedRecords = searchByKeyword(filename, keyword, matchCount);
-            break;
-        }
-        case 5:
-            cout << "\nKembali ke menu utama...\n";
-            continue;
-        }
+            cout << "\n\n"; 
 
-        if (matchCount < 0)
-        {
-            cout << RED << "[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR << "\n";
-        }
-        else if (matchCount == 0)
-        {
-            cout << "\nData tidak ditemukan.\n";
-        }
-        else
-        {
-            cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n\n";
-            for (int i = 0; i < matchCount; i++)
+            switch (menuChoice)
             {
-                cout << "username     = \"" << matchedRecords[i].username << "\";\n";
-                cout << "date         = \"" << matchedRecords[i].date << "\";\n";
-                cout << "mood         = " << matchedRecords[i].mood << ";\n";
-                cout << "productivity = " << matchedRecords[i].productivity << ";\n";
-                cout << "note         = \"" << matchedRecords[i].note << "\";\n";
-                cout << "--------------------------\n";
+            case 0: 
+            {
+                string targetDate;
+                cout << "Masukkan tanggal (YYYY-MM-DD): ";
+                clearInputBuffer();
+                getline(cin, targetDate);
+                matchedRecords = searchByDate(filename, targetDate, matchCount);
+                processSearch = true;
+                break;
             }
-        }
-        delete[] matchedRecords;
+            case 1: 
+            {
+                int moodChoice;
+                cout << "Pilih Kategori Mood:\n";
+                cout << "1. Mood Buruk (< 3)\n";
+                cout << "2. Mood Biasa (== 3)\n";
+                cout << "3. Mood Bagus (> 3)\n";
+                readInt(moodChoice, 1, 3, "Pilihan Kategori (1-3): ");
+                matchedRecords = searchByMoodCategory(filename, moodChoice, matchCount);
+                processSearch = true;
+                break;
+            }
+            case 2: 
+            {
+                int targetProd;
+                readInt(targetProd, 1, 10, "Masukkan produktivitas (1-10): ");
+                matchedRecords = searchByProductivity(filename, targetProd, matchCount);
+                processSearch = true;
+                break;
+            }
+            case 3: 
+            {
+                string keyword;
+                cout << "Masukkan keyword: ";
+                clearInputBuffer();
+                getline(cin, keyword);
+                matchedRecords = searchByKeyword(filename, keyword, matchCount);
+                processSearch = true;
+                break;
+            }
+            case 4: 
+                running = false;
+                break;
+            }
 
-    } while (choice != 5);
+            if (processSearch)
+            {
+                if (matchCount < 0)
+                {
+                    cout << RED << "\n[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR << "\n";
+                }
+                else if (matchCount == 0)
+                {
+                    cout << "\nData tidak ditemukan.\n";
+                }
+                else
+                {
+                    cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n\n";
+                    for (int i = 0; i < matchCount; i++)
+                    {
+                        cout << "username     = \"" << matchedRecords[i].username << "\";\n";
+                        cout << "date         = \"" << matchedRecords[i].date << "\";\n";
+                        cout << "mood         = " << matchedRecords[i].mood << ";\n";
+                        cout << "productivity = " << matchedRecords[i].productivity << ";\n";
+                        cout << "note         = \"" << matchedRecords[i].note << "\";\n";
+                        cout << "--------------------------\n";
+                    }
+                }
+                delete[] matchedRecords; 
+                
+                cout << "\nTekan Enter untuk kembali ke menu...";
+                clearInputBuffer();
+                cin.get(); 
+            }
+            break;
+        }
+    }
 }
 
 void printUserJournal(const string &filename)
@@ -982,28 +1016,36 @@ void printUserJournal(const string &filename)
 
 bool writeFile(const string &filename, const userData &data)
 {
-    ofstream fileStream(filename, ios::app);
+    int existingCount = 0;
+    userData *existingRecords = readFile(filename, existingCount);
+    if (existingCount < 0) existingCount = 0; // file belum ada = anggap kosong
+
+    ofstream fileStream(filename, ios::trunc);
     if (!fileStream.is_open())
     {
         cout << RED << "[writeFile] Tidak bisa membuka '" << filename << "'" << RESET_COLOR << "\n";
+        delete[] existingRecords;
         return false;
     }
 
+    for (int i = 0; i < existingCount; i++)
+    {
+        fileStream << existingRecords[i].username << DELIM
+                   << existingRecords[i].date << DELIM
+                   << existingRecords[i].mood << DELIM
+                   << existingRecords[i].productivity << DELIM
+                   << existingRecords[i].note << "\n";
+    }
     fileStream << data.username << DELIM
                << data.date << DELIM
                << data.mood << DELIM
                << data.productivity << DELIM
                << data.note << "\n";
 
-    if (fileStream.fail())
-    {
-        cout << RED << "[writeFile] Gagal menulis ke '" << filename << "'" << RESET_COLOR << "\n";
-        fileStream.close();
-        return false;
-    }
-
+    bool success = !fileStream.fail();
     fileStream.close();
-    return true;
+    delete[] existingRecords;
+    return success;
 }
 
 bool deleteJournal(const string &filename, const string &targetUsername, int journalNumber)
@@ -1132,7 +1174,6 @@ void tulisJurnal()
     cout << "Date               : " << journalBuffer.date << "\n";
 
     readInt(journalBuffer.mood, 1, 5, "Mood (1-5)         : ");
-
     readInt(journalBuffer.productivity, 1, 10, "Productivity (1-10): ");
 
     clearInputBuffer();
@@ -1144,14 +1185,18 @@ void tulisJurnal()
         getline(cin, noteBuffer);
         journalBuffer.note = trimSpaces(noteBuffer);
         if (journalBuffer.note.empty())
-            cout << RED << "  [!] Note tidak boleh kosong.\n"
-                 << RESET_COLOR;
+            cout << RED << "  [!] Note tidak boleh kosong.\n" << RESET_COLOR;
     } while (journalBuffer.note.empty());
 
-    if (writeFile("data/userData.txt", journalBuffer))
+    // Simpan ke userdata.txt 
+    bool ok = writeFile("data/userdata.txt", journalBuffer);
+
+    if (ok)
         cout << GREEN << "\nJurnal berhasil disimpan." << RESET_COLOR << "\n";
+    else if (!ok)
+        cout << RED << "\nGagal menyimpan jurnal" << RESET_COLOR << "\n";
     else
-        cout << RED << "\nGagal menyimpan jurnal." << RESET_COLOR << "\n";
+        cout << RED << "\nGagal menyimpan jurnal" << RESET_COLOR << "\n";
 
     cout << "\nPRESS ANY KEY TO RETURN...";
     HIDE_CURSOR;
@@ -1160,14 +1205,110 @@ void tulisJurnal()
 
 void tampilkanSemuaJurnal()
 {
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+
+    printUserJournal("data/userData.txt");
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
 
 void cariJurnal()
 {
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+
+    cout << CYAN << "===== CARI JURNAL =====" << RESET_COLOR << "\n\n";
+    cout << "Masukkan tanggal / bagian tanggal (YYYY-MM-DD), kosongkan untuk semua: ";
+
+    string keyword;
+    getline(cin, keyword);
+    keyword = trimSpaces(keyword);
+
+    int matchCount = 0;
+    userData *userJournals = searchByUsername("data/userData.txt", currentUser, matchCount);
+
+    if (matchCount < 0)
+    {
+        cout << RED << "Gagal membaca data jurnal." << RESET_COLOR << "\n";
+    }
+    else
+    {
+        int found = 0;
+        for (int i = 0; i < matchCount; i++)
+        {
+            if (keyword.empty() || userJournals[i].date.find(keyword) != string::npos)
+            {
+                found++;
+                cout << "\n--- Journal " << found << " ---\n";
+                cout << "Date        : " << userJournals[i].date << "\n";
+                cout << "Mood        : " << userJournals[i].mood << "\n";
+                cout << "Productivity: " << userJournals[i].productivity << "\n";
+                cout << "Note        : " << userJournals[i].note << "\n";
+            }
+        }
+
+        if (found == 0)
+            cout << "\nTidak ada jurnal yang cocok dengan '" << keyword << "'.\n";
+    }
+
+    delete[] userJournals;
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
 
 void hapusJurnal()
 {
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+
+    int matchCount = 0;
+    userData *userJournals = searchByUsername("data/userData.txt", currentUser, matchCount);
+
+    if (matchCount <= 0)
+    {
+        cout << "Belum ada jurnal untuk dihapus.\n";
+        cout << "\nPRESS ANY KEY TO RETURN...";
+        delete[] userJournals;
+        HIDE_CURSOR;
+        getCh();
+        return;
+    }
+
+    cout << CYAN << "===== HAPUS JURNAL =====" << RESET_COLOR << "\n";
+    for (int i = 0; i < matchCount; i++)
+    {
+        cout << "\n--- Journal " << i + 1 << " ---\n";
+        cout << "Date        : " << userJournals[i].date << "\n";
+        cout << "Mood        : " << userJournals[i].mood << "\n";
+        cout << "Productivity: " << userJournals[i].productivity << "\n";
+        cout << "Note        : " << userJournals[i].note << "\n";
+    }
+    delete[] userJournals;
+
+    int journalNumber;
+    readInt(journalNumber, 0, matchCount, "\nMasukkan nomor jurnal yang ingin dihapus (0 untuk batal): ");
+
+    if (journalNumber == 0)
+    {
+        cout << "\nDibatalkan.\n";
+    }
+    else if (deleteJournal("data/userData.txt", currentUser, journalNumber))
+    {
+        cout << GREEN << "\nJurnal berhasil dihapus." << RESET_COLOR << "\n";
+    }
+    else
+    {
+        cout << RED << "\nGagal menghapus jurnal." << RESET_COLOR << "\n";
+    }
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
 
 void statistik()

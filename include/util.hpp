@@ -113,7 +113,7 @@ userData *searchByKeyword(const string &filename, const string &keyword, int &ou
 
 // Journal Actions & Menus
 void searchMenu(const string &filename);
-void printUserJournal(const string &filename);
+void printUserJournal(const string &filename, const string &targetUsername);
 bool writeFile(const string &filename, const userData &data);
 bool deleteJournal(const string &filename, const string &targetUsername, int journalNumber);
 void printAllJournal(const string &filename);
