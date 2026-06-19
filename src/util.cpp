@@ -1195,11 +1195,11 @@ void tulisJurnal()
     bool ok2 = writeFile("data/userdata.txt", journalBuffer);
 
     if (ok1 && ok2)
-        cout << GREEN << "\nJurnal berhasil disimpan ke journals.txt dan userdata.txt." << RESET_COLOR << "\n";
+        cout << GREEN << "\nJurnal berhasil disimpan." << RESET_COLOR << "\n";
     else if (!ok1)
-        cout << RED << "\nGagal menyimpan ke journals.txt." << RESET_COLOR << "\n";
+        cout << RED << "\nGagal menyimpan jurnal" << RESET_COLOR << "\n";
     else
-        cout << RED << "\nGagal menyimpan ke userdata.txt." << RESET_COLOR << "\n";
+        cout << RED << "\nGagal menyimpan jurnal" << RESET_COLOR << "\n";
 
     cout << "\nPRESS ANY KEY TO RETURN...";
     HIDE_CURSOR;
