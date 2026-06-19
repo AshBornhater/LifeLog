@@ -1182,7 +1182,7 @@ void tulisJurnal()
                  << RESET_COLOR;
     } while (journalBuffer.note.empty());
 
-    if (writeFile("data/userData.txt", journalBuffer))
+    if (writeFile("data/journals.txt", journalBuffer))
         cout << GREEN << "\nJurnal berhasil disimpan." << RESET_COLOR << "\n";
     else
         cout << RED << "\nGagal menyimpan jurnal." << RESET_COLOR << "\n";
