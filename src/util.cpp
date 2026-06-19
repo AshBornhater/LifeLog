@@ -1197,7 +1197,7 @@ void tampilkanSemuaJurnal()
     CLEAR_SCREEN;
     SHOW_CURSOR;
 
-    printUserJournal("data/journals.txt", currentUser);
+    printUserJournal("data/journals.txt");
 
     cout << "\nPRESS ANY KEY TO RETURN...";
     HIDE_CURSOR;
