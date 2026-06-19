@@ -872,7 +872,7 @@ void cariJurnal(const string &filename)
     bool running = true;
     while (running)
     {
-        CLEAR_SCREEN; 
+        CLEAR_SCREEN;
         HIDE_CURSOR;
         
         drawOption(searchMenuOption, searchMenuOptionLength, menuChoice, 35);
@@ -880,10 +880,10 @@ void cariJurnal(const string &filename)
         int key = getKey();
         switch (key)
         {
-        case 72: 
+        case 72:
             menuChoice = (menuChoice == 0) ? searchMenuOptionLength - 1 : menuChoice - 1;
             break;
-        case 80: 
+        case 80:
             menuChoice = (menuChoice == searchMenuOptionLength - 1) ? 0 : menuChoice + 1;
             break;
         case 13:
@@ -1144,7 +1144,7 @@ void jurnalHarian()
                 tampilkanSemuaJurnal();
                 break;
             case 2:
-                cariJurnal();
+                cariJurnal("userData.txt");
                 break;
             case 3:
                 hapusJurnal();
