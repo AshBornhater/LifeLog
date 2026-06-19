@@ -1188,15 +1188,12 @@ void tulisJurnal()
             cout << RED << "  [!] Note tidak boleh kosong.\n" << RESET_COLOR;
     } while (journalBuffer.note.empty());
 
-    // Simpan ke journals.txt
-    bool ok1 = writeFile("data/journals.txt", journalBuffer);
+    // Simpan ke userdata.txt 
+    bool ok = writeFile("data/userdata.txt", journalBuffer);
 
-    // Simpan ke userdata.txt (format sama)
-    bool ok2 = writeFile("data/userdata.txt", journalBuffer);
-
-    if (ok1 && ok2)
+    if (ok)
         cout << GREEN << "\nJurnal berhasil disimpan." << RESET_COLOR << "\n";
-    else if (!ok1)
+    else if (!ok)
         cout << RED << "\nGagal menyimpan jurnal" << RESET_COLOR << "\n";
     else
         cout << RED << "\nGagal menyimpan jurnal" << RESET_COLOR << "\n";
@@ -1211,7 +1208,7 @@ void tampilkanSemuaJurnal()
     CLEAR_SCREEN;
     SHOW_CURSOR;
 
-    printUserJournal("data/journals.txt");
+    printUserJournal("data/userData.txt");
 
     cout << "\nPRESS ANY KEY TO RETURN...";
     HIDE_CURSOR;
@@ -1231,7 +1228,7 @@ void cariJurnal()
     keyword = trimSpaces(keyword);
 
     int matchCount = 0;
-    userData *userJournals = searchByUsername("data/journals.txt", currentUser, matchCount);
+    userData *userJournals = searchByUsername("data/userData.txt", currentUser, matchCount);
 
     if (matchCount < 0)
     {
@@ -1270,7 +1267,7 @@ void hapusJurnal()
     SHOW_CURSOR;
 
     int matchCount = 0;
-    userData *userJournals = searchByUsername("data/journals.txt", currentUser, matchCount);
+    userData *userJournals = searchByUsername("data/userData.txt", currentUser, matchCount);
 
     if (matchCount <= 0)
     {
@@ -1300,7 +1297,7 @@ void hapusJurnal()
     {
         cout << "\nDibatalkan.\n";
     }
-    else if (deleteJournal("data/journals.txt", currentUser, journalNumber))
+    else if (deleteJournal("data/userDatatxt", currentUser, journalNumber))
     {
         cout << GREEN << "\nJurnal berhasil dihapus." << RESET_COLOR << "\n";
     }
