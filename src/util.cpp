@@ -859,88 +859,122 @@ userData *searchByKeyword(const string &filename, const string &keyword, int &ou
 
 void cariJurnal(const string &filename)
 {
-    int choice;
-    do
+    int menuChoice = 0;
+    const string searchMenuOption[] = {
+        "Cari Berdasarkan Tanggal", 
+        "Cari Berdasarkan Mood ", 
+        "Cari Produktivitas", 
+        "Cari Berdasarkan Kata", 
+        "Kembali"
+    };
+    const int searchMenuOptionLength = 5;
+
+    bool running = true;
+    while (running)
     {
-        cout << "\n===== SEARCH MENU =====\n";
-        cout << "1. Cari berdasarkan tanggal\n";
-        cout << "2. Cari berdasarkan mood (Kategori)\n";
-        cout << "3. Cari berdasarkan produktivitas\n";
-        cout << "4. Cari berdasarkan kata\n";
-        cout << "5. Kembali\n";
+        CLEAR_SCREEN; 
+        HIDE_CURSOR;
+        
+        drawOption(searchMenuOption, searchMenuOptionLength, menuChoice, 35);
 
-        readInt(choice, 1, 5, "Pilihan (1-5): ");
+        int key = getKey();
+        switch (key)
+        {
+        case 72: 
+            menuChoice = (menuChoice == 0) ? searchMenuOptionLength - 1 : menuChoice - 1;
+            break;
+        case 80: 
+            menuChoice = (menuChoice == searchMenuOptionLength - 1) ? 0 : menuChoice + 1;
+            break;
+        case 13:
+            
+            SHOW_CURSOR; 
 
-        userData *matchedRecords = nullptr;
-        int matchCount = 0;
+            userData *matchedRecords = nullptr;
+            int matchCount = 0;
+            bool processSearch = false; 
 
-        switch (choice)
-        {
-        case 1:
-        {
-            string targetDate;
-            cout << "\nMasukkan tanggal (YYYY-MM-DD): ";
-            clearInputBuffer();
-            getline(cin, targetDate);
-            matchedRecords = searchByDate(filename, targetDate, matchCount);
-            break;
-        }
-        case 2:
-        {
-            int moodChoice;
-            cout << "\nPilih Kategori Mood:\n";
-            cout << "1. Mood Buruk (< 3)\n";
-            cout << "2. Mood Biasa (== 3)\n";
-            cout << "3. Mood Bagus (> 3)\n";
-            readInt(moodChoice, 1, 3, "Pilihan Kategori (1-3): ");
-            matchedRecords = searchByMoodCategory(filename, moodChoice, matchCount);
-            break;
-        }
-        case 3:
-        {
-            int targetProd;
-            readInt(targetProd, 1, 10, "\nMasukkan produktivitas (1-10): ");
-            matchedRecords = searchByProductivity(filename, targetProd, matchCount);
-            break;
-        }
-        case 4:
-        {
-            string keyword;
-            cout << "\nMasukkan keyword: ";
-            clearInputBuffer();
-            getline(cin, keyword);
-            matchedRecords = searchByKeyword(filename, keyword, matchCount);
-            break;
-        }
-        case 5:
-            cout << "\nKembali ke menu utama...\n";
-            continue;
-        }
+            cout << "\n\n"; 
 
-        if (matchCount < 0)
-        {
-            cout << RED << "[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR << "\n";
-        }
-        else if (matchCount == 0)
-        {
-            cout << "\nData tidak ditemukan.\n";
-        }
-        else
-        {
-            cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n\n";
-            for (int i = 0; i < matchCount; i++)
+            switch (menuChoice)
             {
-                cout << "username     = \"" << matchedRecords[i].username << "\";\n";
-                cout << "date         = \"" << matchedRecords[i].date << "\";\n";
-                cout << "mood         = " << matchedRecords[i].mood << ";\n";
-                cout << "productivity = " << matchedRecords[i].productivity << ";\n";
-                cout << "note         = \"" << matchedRecords[i].note << "\";\n";
-                cout << "--------------------------\n";
+            case 0: 
+            {
+                string targetDate;
+                cout << "Masukkan tanggal (YYYY-MM-DD): ";
+                clearInputBuffer();
+                getline(cin, targetDate);
+                matchedRecords = searchByDate(filename, targetDate, matchCount);
+                processSearch = true;
+                break;
             }
-        }
-        delete[] matchedRecords;
+            case 1: 
+            {
+                int moodChoice;
+                cout << "Pilih Kategori Mood:\n";
+                cout << "1. Mood Buruk (< 3)\n";
+                cout << "2. Mood Biasa (== 3)\n";
+                cout << "3. Mood Bagus (> 3)\n";
+                readInt(moodChoice, 1, 3, "Pilihan Kategori (1-3): ");
+                matchedRecords = searchByMoodCategory(filename, moodChoice, matchCount);
+                processSearch = true;
+                break;
+            }
+            case 2: 
+            {
+                int targetProd;
+                readInt(targetProd, 1, 10, "Masukkan produktivitas (1-10): ");
+                matchedRecords = searchByProductivity(filename, targetProd, matchCount);
+                processSearch = true;
+                break;
+            }
+            case 3: 
+            {
+                string keyword;
+                cout << "Masukkan keyword: ";
+                clearInputBuffer();
+                getline(cin, keyword);
+                matchedRecords = searchByKeyword(filename, keyword, matchCount);
+                processSearch = true;
+                break;
+            }
+            case 4: 
+                running = false;
+                break;
+            }
 
-    } while (choice != 5);
+            if (processSearch)
+            {
+                if (matchCount < 0)
+                {
+                    cout << RED << "\n[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR << "\n";
+                }
+                else if (matchCount == 0)
+                {
+                    cout << "\nData tidak ditemukan.\n";
+                }
+                else
+                {
+                    cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n\n";
+                    for (int i = 0; i < matchCount; i++)
+                    {
+                        cout << "username     = \"" << matchedRecords[i].username << "\";\n";
+                        cout << "date         = \"" << matchedRecords[i].date << "\";\n";
+                        cout << "mood         = " << matchedRecords[i].mood << ";\n";
+                        cout << "productivity = " << matchedRecords[i].productivity << ";\n";
+                        cout << "note         = \"" << matchedRecords[i].note << "\";\n";
+                        cout << "--------------------------\n";
+                    }
+                }
+                delete[] matchedRecords; 
+                
+                cout << "\nTekan Enter untuk kembali ke menu...";
+                clearInputBuffer();
+                cin.get(); 
+            }
+            break;
+        }
+    }
 }
 
 void printUserJournal(const string &filename)
