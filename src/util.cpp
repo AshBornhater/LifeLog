@@ -1318,7 +1318,9 @@ void statistik()
 
 void achievement()
 {
-    bool tahunKabisat(int tahun)
+    
+}
+bool tahunKabisat(int tahun)
 {
     if (tahun % 4 != 0)
         return false;
@@ -1503,58 +1505,6 @@ void tampilkanAchievement(const string &username)
 
     if (!ada)
         cout << "Belum ada achievement yang didapat.\n";
-}
-
-void achievement()
-{
-    int menuChoice = 0;
-    const string achievementMenuOption[] = {"Cek Achievement Baru", "Lihat Semua Achievement", "Kembali"};
-    const int achievementMenuOptionLength = 3;
-
-    bool running = true;
-    while (running)
-    {
-        CLEAR_SCREEN;
-        HIDE_CURSOR;
-        drawOption(achievementMenuOption, achievementMenuOptionLength, menuChoice, 25);
-
-        int key = getKey();
-        switch (key)
-        {
-        case 72:
-            menuChoice = (menuChoice == 0) ? achievementMenuOptionLength - 1 : menuChoice - 1;
-            break;
-        case 80:
-            menuChoice = (menuChoice == achievementMenuOptionLength - 1) ? 0 : menuChoice + 1;
-            break;
-        case 13:
-            switch (menuChoice)
-            {
-            case 0:
-                CLEAR_SCREEN;
-                SHOW_CURSOR;
-                cout << CYAN << "======== CEK ACHIEVEMENT ========" << RESET_COLOR << "\n\n";
-                cekAchievementBaru(currentUser);
-                cout << "\nPRESS ANY KEY TO RETURN...";
-                HIDE_CURSOR;
-                getCh();
-                break;
-            case 1:
-                CLEAR_SCREEN;
-                SHOW_CURSOR;
-                tampilkanAchievement(currentUser);
-                cout << "\nPRESS ANY KEY TO RETURN...";
-                HIDE_CURSOR;
-                getCh();
-                break;
-            case 2:
-                running = false;
-                break;
-            }
-            break;
-        }
-    }
-}
 }
 
 void profilAkun()
