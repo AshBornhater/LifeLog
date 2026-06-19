@@ -1313,7 +1313,357 @@ void hapusJurnal()
 
 void statistik()
 {
-    // TODO: Implementasi fitur statistik
+
+string getWeekLabel(const string &date)
+{
+    if (date.size() < 10) return "Unknown";
+
+    int year  = stoi(date.substr(0, 4));
+    int month = stoi(date.substr(5, 2));
+    int day   = stoi(date.substr(8, 2));
+
+    int daysInMonth[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+        daysInMonth[2] = 29;
+
+    int dayOfYear = day;
+    for (int m = 1; m < month; m++)
+        dayOfYear += daysInMonth[m];
+
+    int weekNum = (dayOfYear - 1) / 7 + 1;
+
+    char buf[16];
+    // format "YYYY-Www"
+    snprintf(buf, sizeof(buf), "%04d-W%02d", year, weekNum);
+    return string(buf);
+}
+
+string getMonthLabel(const string &date)
+{
+    if (date.size() < 7) return "Unknown";
+    return date.substr(0, 7);
+}
+
+void printBar(double value, double maxValue, int barWidth = 20)
+{
+    int filled = (maxValue > 0) ? (int)((value / maxValue) * barWidth) : 0;
+    cout << "[";
+    for (int i = 0; i < barWidth; i++)
+        cout << (i < filled ? "#" : "-");
+    cout << "]";
+}
+
+struct PeriodStat
+{
+    string label;       
+    double totalMood;
+    double totalProd;
+    int    count;
+};
+
+int findOrAddPeriod(PeriodStat *arr, int &size, int capacity, const string &label)
+{
+    for (int i = 0; i < size; i++)
+        if (arr[i].label == label) return i;
+
+    if (size >= capacity) return -1; 
+
+    arr[size].label     = label;
+    arr[size].totalMood = 0;
+    arr[size].totalProd = 0;
+    arr[size].count     = 0;
+    return size++;
+}
+
+void sortPeriodStats(PeriodStat *arr, int size)
+{
+    for (int i = 1; i < size; i++)
+    {
+        PeriodStat key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j].label > key.label)
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+string getNamaBulan(const string &monthLabel) 
+{
+    const string namaBulan[] = {
+        "", "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    };
+    if (monthLabel.size() < 7) return monthLabel;
+    int m = stoi(monthLabel.substr(5, 2));
+    if (m < 1 || m > 12) return monthLabel;
+    return monthLabel.substr(0, 4) + " - " + namaBulan[m];
+}
+
+void tampilkanTabelStatistik(PeriodStat *stats, int size, bool isWeekly)
+{
+    if (size == 0)
+    {
+        cout << "  Tidak ada data untuk ditampilkan.\n";
+        return;
+    }
+
+    sortPeriodStats(stats, size);
+
+    double maxMood = 0, maxProd = 0;
+    for (int i = 0; i < size; i++)
+    {
+        double avgM = stats[i].totalMood / stats[i].count;
+        double avgP = stats[i].totalProd / stats[i].count;
+        if (avgM > maxMood) maxMood = avgM;
+        if (avgP > maxProd) maxProd = avgP;
+    }
+
+    cout << "\n";
+    cout << CYAN;
+    if (isWeekly)
+        cout << "  " << string(70, '=') << "\n"
+             << "  " << "  PERIODE (MINGGU)   |  Jml  |  Rata-rata Mood  | Rata-rata Produktivitas\n"
+             << "  " << string(70, '=') << "\n";
+    else
+        cout << "  " << string(70, '=') << "\n"
+             << "  " << "    PERIODE (BULAN)     |  Jml  |  Rata-rata Mood  | Rata-rata Produktivitas\n"
+             << "  " << string(70, '=') << "\n";
+    cout << RESET_COLOR;
+
+    for (int i = 0; i < size; i++)
+    {
+        double avgMood = stats[i].totalMood / stats[i].count;
+        double avgProd = stats[i].totalProd / stats[i].count;
+
+        string periodeLabel = isWeekly
+            ? stats[i].label                  
+            : getNamaBulan(stats[i].label);   
+
+        string paddedLabel = periodeLabel;
+        while ((int)paddedLabel.size() < 22) paddedLabel += " ";
+
+        cout << "  " << paddedLabel << "| "
+             << "  " << stats[i].count << (stats[i].count < 10 ? "   " : "  ") << "| ";
+
+        if (avgMood >= 4.0)      cout << GREEN;
+        else if (avgMood <= 2.0) cout << RED;
+        else                     cout << YELLOW;
+        cout << avgMood;
+        cout << RESET_COLOR;
+
+        char moodBuf[8], prodBuf[8];
+        snprintf(moodBuf, sizeof(moodBuf), "%.2f", avgMood);
+        snprintf(prodBuf, sizeof(prodBuf), "%.2f", avgProd);
+
+        int moodPad = 14 - (int)string(moodBuf).size();
+        cout << string(moodPad, ' ') << "| ";
+
+        if (avgProd >= 7.0)      cout << GREEN;
+        else if (avgProd <= 3.0) cout << RED;
+        else                     cout << YELLOW;
+        cout << prodBuf;
+        cout << RESET_COLOR << "\n";
+    }
+
+    cout << CYAN << "  " << string(70, '=') << RESET_COLOR << "\n";
+
+    cout << "\n" << CYAN << "  [ Grafik Rata-rata Mood ]" << RESET_COLOR << "\n";
+    for (int i = 0; i < size; i++)
+    {
+        double avgMood = stats[i].totalMood / stats[i].count;
+        string lbl = isWeekly ? stats[i].label : getNamaBulan(stats[i].label);
+        while ((int)lbl.size() < 22) lbl += " ";
+
+        if (avgMood >= 4.0)      cout << GREEN;
+        else if (avgMood <= 2.0) cout << RED;
+        else                     cout << YELLOW;
+
+        char buf[8]; snprintf(buf, sizeof(buf), "%.2f", avgMood);
+        cout << "  " << lbl << " ";
+        printBar(avgMood, 5.0, 25);
+        cout << " " << buf << "/5.00\n";
+        cout << RESET_COLOR;
+    }
+
+    cout << "\n" << CYAN << "  [ Grafik Rata-rata Produktivitas ]" << RESET_COLOR << "\n";
+    for (int i = 0; i < size; i++)
+    {
+        double avgProd = stats[i].totalProd / stats[i].count;
+        string lbl = isWeekly ? stats[i].label : getNamaBulan(stats[i].label);
+        while ((int)lbl.size() < 22) lbl += " ";
+
+        if (avgProd >= 7.0)      cout << GREEN;
+        else if (avgProd <= 3.0) cout << RED;
+        else                     cout << YELLOW;
+
+        char buf[8]; snprintf(buf, sizeof(buf), "%.2f", avgProd);
+        cout << "  " << lbl << " ";
+        printBar(avgProd, 10.0, 25);
+        cout << " " << buf << "/10.00\n";
+        cout << RESET_COLOR;
+    }
+}
+
+void hitungDanTampilkanStatistik(userData *records, int count, bool isWeekly)
+{
+    int capacity = isWeekly ? 520 : 120;
+    PeriodStat *stats = new PeriodStat[capacity];
+    int size = 0;
+
+    for (int i = 0; i < count; i++)
+    {
+        string label = isWeekly
+            ? getWeekLabel(records[i].date)
+            : getMonthLabel(records[i].date);
+
+        int idx = findOrAddPeriod(stats, size, capacity, label);
+        if (idx < 0) continue;
+
+        stats[idx].totalMood += records[i].mood;
+        stats[idx].totalProd += records[i].productivity;
+        stats[idx].count++;
+    }
+
+    tampilkanTabelStatistik(stats, size, isWeekly);
+
+    delete[] stats;
+}
+
+void tampilkanRingkasan(userData *records, int count)
+{
+    if (count == 0) return;
+
+    double totalMood = 0, totalProd = 0;
+    int maxMood = records[0].mood, minMood = records[0].mood;
+    int maxProd = records[0].productivity, minProd = records[0].productivity;
+    string maxMoodDate = records[0].date, minMoodDate = records[0].date;
+
+    for (int i = 0; i < count; i++)
+    {
+        totalMood += records[i].mood;
+        totalProd += records[i].productivity;
+        if (records[i].mood > maxMood) { maxMood = records[i].mood; maxMoodDate = records[i].date; }
+        if (records[i].mood < minMood) { minMood = records[i].mood; minMoodDate = records[i].date; }
+        if (records[i].productivity > maxProd) maxProd = records[i].productivity;
+        if (records[i].productivity < minProd) minProd = records[i].productivity;
+    }
+
+    double avgMood = totalMood / count;
+    double avgProd = totalProd / count;
+
+    cout << CYAN << "\n  ===== RINGKASAN KESELURUHAN =====" << RESET_COLOR << "\n";
+    cout << "  Total Jurnal Tercatat : " << count << " entri\n";
+
+    cout << "  Rata-rata Mood        : ";
+    if (avgMood >= 4.0) cout << GREEN;
+    else if (avgMood <= 2.0) cout << RED;
+    else cout << YELLOW;
+    char buf[8]; snprintf(buf, sizeof(buf), "%.2f", avgMood);
+    cout << buf << " / 5.00" << RESET_COLOR << "\n";
+
+    cout << "  Rata-rata Produktivitas: ";
+    snprintf(buf, sizeof(buf), "%.2f", avgProd);
+    if (avgProd >= 7.0) cout << GREEN;
+    else if (avgProd <= 3.0) cout << RED;
+    else cout << YELLOW;
+    cout << buf << " / 10.00" << RESET_COLOR << "\n";
+
+    cout << "  Mood Tertinggi        : " << GREEN << maxMood << RESET_COLOR
+         << " (pada " << maxMoodDate << ")\n";
+    cout << "  Mood Terendah         : " << RED << minMood << RESET_COLOR
+         << " (pada " << minMoodDate << ")\n";
+    cout << "  Produktivitas Maks    : " << GREEN << maxProd << RESET_COLOR << "\n";
+    cout << "  Produktivitas Min     : " << RED   << minProd << RESET_COLOR << "\n";
+}
+
+void statistik()
+{
+    int menuChoice = 0;
+    const string statMenuOption[] = {
+        "Statistik Mingguan",
+        "Statistik Bulanan",
+        "Kembali"
+    };
+    const int statMenuOptionLength = 3;
+
+    bool running = true;
+    while (running)
+    {
+        CLEAR_SCREEN;
+        HIDE_CURSOR;
+        drawOption(statMenuOption, statMenuOptionLength, menuChoice, 27);
+
+        int key = getKey();
+        switch (key)
+        {
+        case 72:
+            menuChoice = (menuChoice == 0) ? statMenuOptionLength - 1 : menuChoice - 1;
+            break;
+        case 80:
+            menuChoice = (menuChoice == statMenuOptionLength - 1) ? 0 : menuChoice + 1;
+            break;
+        case 13:
+            if (menuChoice == 2)
+            {
+                running = false;
+                break;
+            }
+
+            {
+                CLEAR_SCREEN;
+                SHOW_CURSOR;
+
+                bool isWeekly = (menuChoice == 0);
+
+                cout << CYAN;
+                cout << "  ╔══════════════════════════════════════════════════╗\n";
+                if (isWeekly)
+                    cout << "  ║           STATISTIK MINGGUAN - " << currentUser;
+                else
+                    cout << "  ║           STATISTIK BULANAN  - " << currentUser;
+
+                int nameLen = (int)currentUser.size();
+                int pad = 17 - nameLen;
+                if (pad < 0) pad = 0;
+                cout << string(pad, ' ') << "║\n";
+                cout << "  ╚══════════════════════════════════════════════════╝\n";
+                cout << RESET_COLOR;
+
+                int count = 0;
+                userData *records = searchByUsername("data/userData.txt", currentUser, count);
+
+                if (count < 0)
+                {
+                    cout << RED << "\n  [!] Gagal membaca file data jurnal.\n" << RESET_COLOR;
+                }
+                else if (count == 0)
+                {
+                    cout << YELLOW << "\n  [!] Belum ada jurnal untuk ditampilkan statistiknya.\n"
+                         << "      Silakan tulis jurnal terlebih dahulu.\n" << RESET_COLOR;
+                }
+                else
+                {
+                    tampilkanRingkasan(records, count);
+
+                    cout << CYAN << "\n  ===== DETAIL PER "
+                         << (isWeekly ? "MINGGU" : "BULAN")
+                         << " =====" << RESET_COLOR << "\n";
+                    hitungDanTampilkanStatistik(records, count, isWeekly);
+                }
+
+                delete[] records;
+
+                cout << "\n\n  PRESS ANY KEY TO RETURN...";
+                HIDE_CURSOR;
+                getCh();
+            }
+            break;
+        }
+    }
+}
 }
 
 void achievement()
