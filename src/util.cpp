@@ -1166,7 +1166,6 @@ void tulisJurnal()
     cout << "Date               : " << journalBuffer.date << "\n";
 
     readInt(journalBuffer.mood, 1, 5, "Mood (1-5)         : ");
-
     readInt(journalBuffer.productivity, 1, 10, "Productivity (1-10): ");
 
     clearInputBuffer();
@@ -1178,14 +1177,21 @@ void tulisJurnal()
         getline(cin, noteBuffer);
         journalBuffer.note = trimSpaces(noteBuffer);
         if (journalBuffer.note.empty())
-            cout << RED << "  [!] Note tidak boleh kosong.\n"
-                 << RESET_COLOR;
+            cout << RED << "  [!] Note tidak boleh kosong.\n" << RESET_COLOR;
     } while (journalBuffer.note.empty());
 
-    if (writeFile("data/journals.txt", journalBuffer))
-        cout << GREEN << "\nJurnal berhasil disimpan." << RESET_COLOR << "\n";
+    // Simpan ke journals.txt
+    bool ok1 = writeFile("data/journals.txt", journalBuffer);
+
+    // Simpan ke userdata.txt (format sama)
+    bool ok2 = writeFile("data/userdata.txt", journalBuffer);
+
+    if (ok1 && ok2)
+        cout << GREEN << "\nJurnal berhasil disimpan ke journals.txt dan userdata.txt." << RESET_COLOR << "\n";
+    else if (!ok1)
+        cout << RED << "\nGagal menyimpan ke journals.txt." << RESET_COLOR << "\n";
     else
-        cout << RED << "\nGagal menyimpan jurnal." << RESET_COLOR << "\n";
+        cout << RED << "\nGagal menyimpan ke userdata.txt." << RESET_COLOR << "\n";
 
     cout << "\nPRESS ANY KEY TO RETURN...";
     HIDE_CURSOR;
