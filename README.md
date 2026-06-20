@@ -48,25 +48,3 @@ g++ src/*.cpp -o main
 ```
 
 ---
-
-## Anggota Kelompok
-
-| Nama | NIM |
-|------|-----|
-| Vidia Iqmalia Putri | F1D02510029 |
-| Lale Juliesti Ayuningkusuma | F1D02510064 |
-| Lalu Muhammad Izza Abda Maulana | F1D02510067 |
-| Muhammad Bijak Rizqullah | F1D02510081 |
-| Zidny Ilma | F1D02510100 |
-| Andika Ramdhanu | F1D02510104 |
-| Nurlaeli Hidayati | F1D02510129 |
-
----
-
-## Behind the Terminal
-
-<p align="center">
-  <img src="docs/screenshots/team.jpg" alt="LifeLog Team" width="700">
-</p>
-
-
