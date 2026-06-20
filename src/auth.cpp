@@ -256,16 +256,38 @@ string encryptPassword(const string &plain)
     return result;
 }
 
-// Fungsi untuk merender ringkasan profil akun user aktif
+// Fungsi untuk merender ringkasan profil akun user aktif secara interaktif
 void profilAkun()
 {
     CLEAR_SCREEN;
-    SHOW_CURSOR;
+    HIDE_CURSOR;
 
     int jumlahJurnal = 0;
     userData *records = searchByUsername("data/userData.txt", currentUser, jumlahJurnal);
     if (jumlahJurnal < 0)
         jumlahJurnal = 0;
+
+    // Menghitung rekor streak tertinggi menggunakan data jurnal yang sudah diambil
+    int totalMaksStreak = 0;
+    if (jumlahJurnal > 0)
+    {
+        urutkanByTanggal(records, jumlahJurnal);
+        
+        userData *cleanRecords = new userData[jumlahJurnal];
+        int jmlDataBersih = 0;
+        cleanRecords[jmlDataBersih++] = records[0];
+        
+        for (int i = 1; i < jumlahJurnal; i++)
+        {
+            if (records[i].date != records[i - 1].date)
+            {
+                cleanRecords[jmlDataBersih++] = records[i];
+            }
+        }
+        
+        totalMaksStreak = hitungMaksimalStreak(cleanRecords, jmlDataBersih);
+        delete[] cleanRecords;
+    }
 
     int jumlahAchievement = 0;
     ifstream achFile("data/achievements.txt");
@@ -284,14 +306,45 @@ void profilAkun()
         achFile.close();
     }
 
-    cout << CYAN << "======== PROFIL AKUN ========" << RESET_COLOR << "\n\n";
-    cout << "Username          : " << currentUser << "\n";
-    cout << "Total Jurnal      : " << jumlahJurnal << " entri\n";
-    cout << "Total Achievement : " << jumlahAchievement << "\n";
+    // Merender desain UI Profil Baru (Gamer Dashboard Style)
+    drawBorder(BORDER_ROW, BORDER_COLUMN, 20, 80);
+    
+    moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 26);
+    cout << CYAN << "=== USER ADVENTURER PROFILE ===" << RESET_COLOR;
+    
+    moveCursor(BORDER_ROW + 5, BORDER_COLUMN + 10);
+    cout << "Aventurer ID  : " << YELLOW << currentUser << RESET_COLOR;
+    
+    moveCursor(BORDER_ROW + 7, BORDER_COLUMN + 10);
+    cout << "Status Rank   : ";
+    if (jumlahJurnal >= 30)      cout << GREEN << "Senior Chronicler (Veteran)" << RESET_COLOR;
+    else if (jumlahJurnal >= 7)  cout << CYAN << "Journeyman Writer" << RESET_COLOR;
+    else                         cout << RED << "Novice Diarist" << RESET_COLOR;
+
+    moveCursor(BORDER_ROW + 9, BORDER_COLUMN + 10);
+    cout << "------------------------------------------------------------";
+
+    moveCursor(BORDER_ROW + 11, BORDER_COLUMN + 10);
+    cout << "Total Jurnal Tersimpan : " << GREEN << jumlahJurnal << RESET_COLOR << " entri";
+
+    moveCursor(BORDER_ROW + 13, BORDER_COLUMN + 10);
+    cout << "Koleksi Badge Medali   : " << CYAN << jumlahAchievement << RESET_COLOR << " unlocked";
+
+    // Bagian spill total rekor streak tertinggi pengguna
+    moveCursor(BORDER_ROW + 15, BORDER_COLUMN + 10);
+    cout << "Rekor Streak Tertinggi : " << YELLOW << totalMaksStreak << RESET_COLOR << " hari berturut-turut ";
+    if (totalMaksStreak >= 30)  
+        cout << MAGENTA << "[GODLIKE!]" << RESET_COLOR;
+    else if (totalMaksStreak >= 7)   cout << YELLOW << "[UNSTOPPABLE]" << RESET_COLOR;
+    else if (totalMaksStreak > 0)    cout << CYAN << "[WARMING UP]" << RESET_COLOR;
+    else                             cout << RED << "[NO STREAK]" << RESET_COLOR;
+
+    moveCursor(BORDER_ROW + 17, BORDER_COLUMN + 10);
+    cout << "------------------------------------------------------------";
+
+    moveCursor(BORDER_ROW + 19, BORDER_COLUMN + 25);
+    cout << "PRESS ANY KEY TO RETURN TO MENU...";
 
     delete[] records;
-
-    cout << "\nPRESS ANY KEY TO RETURN...";
-    HIDE_CURSOR;
     getch();
 }

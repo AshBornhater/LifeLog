@@ -17,6 +17,7 @@
 #define CYAN "\033[36m"
 #define YELLOW "\033[93m"
 #define RED "\033[31m"
+#define MAGENTA "\033[95m"
 #define CLEAR_SCREEN cout << "\033[2J\033[H"
 #define HIDE_CURSOR cout << "\033[?25l"
 #define SHOW_CURSOR cout << "\033[?25h"
@@ -107,6 +108,7 @@ bool sudahPunyaAchievement(const std::string &username, const std::string &namaA
 bool simpanAchievement(const std::string &username, const std::string &namaAchievement);
 void cekAchievementBaru(const std::string &username);
 void tampilkanAchievement(const std::string &username);
+int hitungMaksimalStreak(userData *dataUser, int jmlData);
 void achievement();
 
 // --- MODUL: TERMINAL & ANTARMUKA CLI (`terminalUI.cpp`) ---

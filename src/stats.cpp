@@ -287,11 +287,11 @@ void statistik()
 
                 cout << CYAN;
                 cout << "  +--------------------------------------------------+\n";
-                cout << "  ¦  " << (isWeekly ? "STATISTIK MINGGUAN" : "STATISTIK BULANAN ")
+                cout << "  |  " << (isWeekly ? "STATISTIK MINGGUAN" : "STATISTIK BULANAN ")
                      << " - " << currentUser;
                 int pad = 25 - (int)currentUser.size();
                 if (pad < 0) pad = 0;
-                cout << string(pad, ' ') << "¦\n";
+                cout << string(pad, ' ') << "  |\n";
                 cout << "  +--------------------------------------------------+\n";
                 cout << RESET_COLOR;
 
