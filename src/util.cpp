@@ -697,8 +697,10 @@ userData *searchByUsername(const string &filename, const string &targetUsername,
     return matchedRecords;
 }
 
-userData *searchByDate(const string &filename, const string &targetDate, int &outCount)
+userData *searchByDate(const string &filename, const string &targetDateRaw, int &outCount)
 {
+    string targetDate = trimSpaces(targetDateRaw);
+
     ifstream fileStream(filename);
     if (!fileStream.is_open())
     {
@@ -721,7 +723,7 @@ userData *searchByDate(const string &filename, const string &targetDate, int &ou
         if (!parseLine(currentLine, parsedRecord))
             continue;
 
-        if (parsedRecord.date == targetDate)
+        if (parsedRecord.username == currentUser && parsedRecord.date == targetDate)
         {
             if (matchCount == capacity)
             {
@@ -761,12 +763,15 @@ userData *searchByMoodCategory(const string &filename, int categoryOption, int &
             continue;
 
         bool isMatch = false;
-        if (categoryOption == 1 && parsedRecord.mood < 3)
-            isMatch = true;
-        if (categoryOption == 2 && parsedRecord.mood == 3)
-            isMatch = true;
-        if (categoryOption == 3 && parsedRecord.mood > 3)
-            isMatch = true;
+        if (parsedRecord.username == currentUser)
+        {
+            if (categoryOption == 1 && parsedRecord.mood < 3)
+                isMatch = true;
+            if (categoryOption == 2 && parsedRecord.mood == 3)
+                isMatch = true;
+            if (categoryOption == 3 && parsedRecord.mood > 3)
+                isMatch = true;
+        }
 
         if (isMatch)
         {
@@ -807,7 +812,7 @@ userData *searchByProductivity(const string &filename, int targetProd, int &outC
         if (!parseLine(currentLine, parsedRecord))
             continue;
 
-        if (parsedRecord.productivity == targetProd)
+        if (parsedRecord.username == currentUser && parsedRecord.productivity == targetProd)
         {
             if (matchCount == capacity)
             {
@@ -822,8 +827,10 @@ userData *searchByProductivity(const string &filename, int targetProd, int &outC
     return matchedRecords;
 }
 
-userData *searchByKeyword(const string &filename, const string &keyword, int &outCount)
+userData *searchByKeyword(const string &filename, const string &keywordRaw, int &outCount)
 {
+    string keyword = trimSpaces(keywordRaw);
+
     ifstream fileStream(filename);
     if (!fileStream.is_open())
     {
@@ -846,7 +853,7 @@ userData *searchByKeyword(const string &filename, const string &keyword, int &ou
         if (!parseLine(currentLine, parsedRecord))
             continue;
 
-        if (parsedRecord.note.find(keyword) != string::npos)
+        if (parsedRecord.username == currentUser && parsedRecord.note.find(keyword) != string::npos)
         {
             if (matchCount == capacity)
             {
@@ -905,52 +912,85 @@ void cariJurnal(const string &filename)
             if (processSearch)
             {
                 CLEAR_SCREEN;
-                drawBorder(BORDER_ROW, BORDER_COLUMN, 30, 80);
+                drawBorder(BORDER_ROW, BORDER_COLUMN, 22, 80);
+                drawLifeLogLogoLogin(BORDER_ROW + 2, BORDER_COLUMN + 24);
             }
 
             switch (menuChoice)
             {
             case 0: 
             {
+                moveCursor(BORDER_ROW + 9, 68);
+                cout << "===== CARI BERDASARKAN TANGGAL =====\n";
+
+                moveCursor(BORDER_ROW + 11, 53);
+                cout << "Tanggal (YYYY-MM-DD):";
+                moveCursor(BORDER_ROW + 12, 53);
+                cout << "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+";
+                moveCursor(BORDER_ROW + 13, 53);
+                cout << "|                                                          |";
+                moveCursor(BORDER_ROW + 14, 53);
+                cout << "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+";
+
+                SHOW_CURSOR;
+                moveCursor(BORDER_ROW + 13, 54);
                 string targetDate;
-                moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 3);
-                cout << "Masukkan tanggal (YYYY-MM-DD): ";
                 clearInputBuffer();
                 getline(cin, targetDate);
+                HIDE_CURSOR;
+
                 matchedRecords = searchByDate(filename, targetDate, matchCount);
                 break;
             }
             case 1: 
             {
-                int moodChoice;
-                moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 3);
+                moveCursor(BORDER_ROW + 9, 71);
+                cout << "===== CARI BERDASARKAN MOOD =====\n";
+                moveCursor(BORDER_ROW + 11, 53);
                 cout << "Pilih Kategori Mood:";
-                moveCursor(BORDER_ROW + 3, BORDER_COLUMN + 3);
+                moveCursor(BORDER_ROW + 12, 53);
                 cout << "1. Mood Buruk (< 3)";
-                moveCursor(BORDER_ROW + 4, BORDER_COLUMN + 3);
+                moveCursor(BORDER_ROW + 13, 53);
                 cout << "2. Mood Biasa (== 3)";
-                moveCursor(BORDER_ROW + 5, BORDER_COLUMN + 3);
+                moveCursor(BORDER_ROW + 14, 53);
                 cout << "3. Mood Bagus (> 3)";
-                moveCursor(BORDER_ROW + 7, BORDER_COLUMN + 3);
+                moveCursor(BORDER_ROW + 16, 53);
+                int moodChoice;
                 readInt(moodChoice, 1, 3, "Pilihan Kategori (1-3): ");
                 matchedRecords = searchByMoodCategory(filename, moodChoice, matchCount);
                 break;
             }
             case 2: 
             {
+                moveCursor(BORDER_ROW + 9, 67);
+                cout << "===== CARI BERDASARKAN PRODUKTIVITAS =====\n";
+                moveCursor(BORDER_ROW + 11, 53);
                 int targetProd;
-                moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 3);
                 readInt(targetProd, 1, 10, "Masukkan produktivitas (1-10): ");
                 matchedRecords = searchByProductivity(filename, targetProd, matchCount);
                 break;
             }
             case 3: 
             {
+                moveCursor(BORDER_ROW + 9, 70);
+                cout << "===== CARI BERDASARKAN KATA =====\n";
+
+                moveCursor(BORDER_ROW + 11, 53);
+                cout << "Keyword:";
+                moveCursor(BORDER_ROW + 12, 53);
+                cout << "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+";
+                moveCursor(BORDER_ROW + 13, 53);
+                cout << "|                                                          |";
+                moveCursor(BORDER_ROW + 14, 53);
+                cout << "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+";
+
+                SHOW_CURSOR;
+                moveCursor(BORDER_ROW + 13, 54);
                 string keyword;
-                moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 3);
-                cout << "Masukkan keyword: ";
                 clearInputBuffer();
                 getline(cin, keyword);
+                HIDE_CURSOR;
+
                 matchedRecords = searchByKeyword(filename, keyword, matchCount);
                 break;
             }
@@ -961,55 +1001,34 @@ void cariJurnal(const string &filename)
 
             if (processSearch)
             {
-                int row = BORDER_ROW + 8;
-                int col = BORDER_COLUMN + 3;
+                SHOW_CURSOR;
+                moveCursor(BORDER_ROW + 23, 1);
 
                 if (matchCount < 0)
                 {
-                    moveCursor(row++, col);
-                    cout << RED << "[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR;
+                    cout << RED << "[!] Gagal membuka file atau file tidak ditemukan.\n" << RESET_COLOR;
                 }
                 else if (matchCount == 0)
                 {
-                    moveCursor(row++, col);
-                    cout << "Data tidak ditemukan.";
+                    cout << "Data tidak ditemukan.\n";
                 }
                 else
                 {
-                    moveCursor(row++, col);
-                    cout << "\"" << matchCount << " Jurnal Ditemukan\"";
-                    row++;
-
-                    int maxRow = BORDER_ROW + 30 - 3;
-                    for (int i = 0; i < matchCount && row <= maxRow - 5; i++)
+                    cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n";
+                    for (int i = 0; i < matchCount; i++)
                     {
-                        moveCursor(row++, col);
-                        cout << "username     = \"" << matchedRecords[i].username << "\";";
-                        moveCursor(row++, col);
-                        cout << "date         = \"" << matchedRecords[i].date << "\";";
-                        moveCursor(row++, col);
-                        cout << "mood         = " << matchedRecords[i].mood << ";";
-                        moveCursor(row++, col);
-                        cout << "productivity = " << matchedRecords[i].productivity << ";";
-                        moveCursor(row++, col);
-                        cout << "note         = \"" << matchedRecords[i].note << "\";";
-                        moveCursor(row++, col);
-                        cout << "--------------------------";
-                    }
-
-                    if (row > maxRow - 5)
-                    {
-                        moveCursor(row++, col);
-                        cout << "... (hasil dipotong, terlalu banyak untuk ditampilkan)";
+                        cout << "\n--- Journal " << (i + 1) << " ---\n";
+                        cout << "Date        : " << matchedRecords[i].date << "\n";
+                        cout << "Mood        : " << matchedRecords[i].mood << "\n";
+                        cout << "Productivity: " << matchedRecords[i].productivity << "\n";
+                        cout << "Note        : " << matchedRecords[i].note << "\n";
                     }
                 }
                 delete[] matchedRecords;
 
-                moveCursor(BORDER_ROW + 30 - 2, col);
-                cout << "Tekan Enter untuk kembali ke menu...";
-                moveCursor(BORDER_ROW + 30, 1);
-                clearInputBuffer();
-                cin.get();
+                cout << "\nPRESS ANY KEY TO RETURN...";
+                HIDE_CURSOR;
+                getCh();
             }
             break;
         }
