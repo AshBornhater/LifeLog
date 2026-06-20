@@ -1183,7 +1183,7 @@ void jurnalHarian()
                 tampilkanSemuaJurnal();
                 break;
             case 2:
-                cariJurnal("userData.txt");
+                cariJurnal("data/userData.txt");
                 break;
             case 3:
                 hapusJurnal();
