@@ -1,7 +1,9 @@
+#include "../include/utils.hpp"
 #include <iostream>
-#include <string>
-#include <fstream>
-#include "../include/util.hpp"
+
+using namespace std;
+
+#define SHOW_CURSOR cout << "\033[?25h"
 
 int main()
 {
