@@ -1002,18 +1002,28 @@ void cariJurnal(const string &filename)
             if (processSearch)
             {
                 SHOW_CURSOR;
-                moveCursor(BORDER_ROW + 23, 1);
 
                 if (matchCount < 0)
                 {
-                    cout << RED << "[!] Gagal membuka file atau file tidak ditemukan.\n" << RESET_COLOR;
+                    moveCursor(BORDER_ROW + 18, 53);
+                    cout << RED << "[!] Gagal membuka file atau file tidak ditemukan." << RESET_COLOR;
+                    moveCursor(BORDER_ROW + 20, 53);
+                    cout << "PRESS ANY KEY TO RETURN...";
+                    HIDE_CURSOR;
+                    getCh();
                 }
                 else if (matchCount == 0)
                 {
-                    cout << "Data tidak ditemukan.\n";
+                    moveCursor(BORDER_ROW + 18, 53);
+                    cout << "Data tidak ditemukan.";
+                    moveCursor(BORDER_ROW + 20, 53);
+                    cout << "PRESS ANY KEY TO RETURN...";
+                    HIDE_CURSOR;
+                    getCh();
                 }
                 else
                 {
+                    CLEAR_SCREEN;
                     cout << "\n\"" << matchCount << " Jurnal Ditemukan\"\n";
                     for (int i = 0; i < matchCount; i++)
                     {
@@ -1023,12 +1033,11 @@ void cariJurnal(const string &filename)
                         cout << "Productivity: " << matchedRecords[i].productivity << "\n";
                         cout << "Note        : " << matchedRecords[i].note << "\n";
                     }
+                    cout << "\nPRESS ANY KEY TO RETURN...";
+                    HIDE_CURSOR;
+                    getCh();
                 }
                 delete[] matchedRecords;
-
-                cout << "\nPRESS ANY KEY TO RETURN...";
-                HIDE_CURSOR;
-                getCh();
             }
             break;
         }
