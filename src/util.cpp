@@ -1947,5 +1947,40 @@ void profilAkun()
 
 void about()
 {
-    // TODO: Implementasi informasi aplikasi
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+
+    cout << CYAN
+         << "========== ABOUT ==========\n\n"
+         << RESET_COLOR;
+
+    cout << "LifeLog v1.0\n\n";
+
+    cout << "LifeLog adalah aplikasi jurnal harian\n";
+    cout << "berbasis C++ yang digunakan untuk\n";
+    cout << "mencatat mood, produktivitas, dan\n";
+    cout << "aktivitas harian pengguna.\n\n";
+
+    cout << "Fitur Utama:\n";
+    cout << "- Jurnal Harian\n";
+    cout << "- Statistik Mood & Produktivitas\n";
+    cout << "- Achievement System\n";
+    cout << "- Profil Akun\n\n";
+
+    cout << "===== DEVELOPED BY =====\n\n";
+
+    cout << "1. Vidia Iqmalia Putri          (F1D02510029)\n";
+    cout << "2. Lale Juliesti Ayuningkusuma (F1D02510064)\n";
+    cout << "3. Lalu Muhammad Izza Abda     (F1D02510067)\n";
+    cout << "4. Muhammad Bijak Rizqullah    (F1D02510081)\n";
+    cout << "5. Zidny Ilma                  (F1D02510100)\n";
+    cout << "6. Andika Ramdhanu             (F1D02510104)\n";
+    cout << "7. Nurlaeli Hidayati           (F1D02510129)\n";
+
+    cout << "\nUniversitas Mataram\n";
+    cout << "Program Studi Teknik Informatika\n";
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
