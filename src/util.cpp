@@ -1942,10 +1942,69 @@ void achievement()
 
 void profilAkun()
 {
-    // TODO: Implementasi fitur profil akun
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+
+    int jumlahJurnal = 0;
+    userData *records = searchByUsername("data/userData.txt", currentUser, jumlahJurnal);
+    if (jumlahJurnal < 0)
+        jumlahJurnal = 0;
+
+    int jumlahAchievement = 0;
+    ifstream achFile("data/achievements.txt");
+    if (achFile.is_open())
+    {
+        string line;
+        while (getline(achFile, line))
+        {
+            if (line.empty())
+                continue;
+            size_t pos = 0;
+            string user = nextToken(line, pos);
+            if (user == currentUser)
+                jumlahAchievement++;
+        }
+        achFile.close();
+    }
+
+    cout << CYAN << "======== PROFIL AKUN ========" << RESET_COLOR << "\n\n";
+    cout << "Username          : " << currentUser << "\n";
+    cout << "Total Jurnal      : " << jumlahJurnal << " entri\n";
+    cout << "Total Achievement : " << jumlahAchievement << "\n";
+
+    delete[] records;
+
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    HIDE_CURSOR;
+    getCh();
 }
 
 void about()
 {
-    // TODO: Implementasi informasi aplikasi
+    CLEAR_SCREEN;
+    SHOW_CURSOR;
+    HIDE_CURSOR;
+ 
+    cout << CYAN;
+    cout << "  +--------------------------------------------------+\n";
+    cout << "  |                  TENTANG LIFELOG                  |\n";
+    cout << "  +--------------------------------------------------+\n";
+    cout << RESET_COLOR;
+ 
+    cout << "\n  LifeLog adalah aplikasi jurnal harian berbasis CLI\n";
+    cout << "  yang membantu pengguna mencatat mood, produktivitas,\n";
+    cout << "  dan catatan harian mereka.\n";
+ 
+    cout << "\n  Fitur utama:\n";
+    cout << "   - Tulis, lihat, cari, dan hapus jurnal harian\n";
+    cout << "   - Statistik mingguan & bulanan (mood dan produktivitas)\n";
+    cout << "   - Sistem achievement berdasarkan konsistensi menulis\n";
+    cout << "   - Profil akun dan keamanan password\n";
+ 
+    cout << "\n  Versi   : 1.0.0\n";
+    cout << "  Dibuat oleh kelompok Praktikum C++\n";
+ 
+    cout << "\nPRESS ANY KEY TO RETURN...";
+    getCh();
+
 }
