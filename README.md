@@ -5,14 +5,14 @@ LifeLog adalah program terminal untuk mencatat jurnal harian, melacak mood dan p
 
 ---
 
-## Fitur
+## 💻 Fitur
 
 ### Jurnal Harian
 Ini adalah inti dari aplikasi. Kamu bisa menulis entri baru, membaca semua jurnal yang sudah tersimpan, atau mencarinya berdasarkan berbagai kriteria:
 
 - **Tulis jurnal** - Sistem otomatis mencatat nama pengguna dan tanggal hari ini. Kamu tinggal isi skala mood (1-10), skala produktivitas (1-10), lalu tulis catatan bebas tentang hari kamu.
 - **Lihat semua jurnal** - Menampilkan seluruh riwayat entri dari yang pertama sampai terbaru.
-- **Cari jurnal** - Bisa dicari berdasarkan tanggal (format YYYY-MM-DD), kategori mood (buruk <= 3, biasa 4-6, bagus >= 7), tingkat produktivitas, atau kata kunci dari isi catatan. Pencarian kata kunci tidak case-sensitive.
+- **Cari jurnal** - Bisa dicari berdasarkan tanggal (format YYYY-MM-DD), kategori mood (buruk <= 3, biasa 4-6, bagus >= 7), tingkat produktivitas, atau kata kunci dari isi catatan.
 - **Hapus jurnal** - Pilih nomor urut entri yang ingin dihapus, lalu konfirmasi. Penghapusan bersifat permanen.
 
 ### Statistik
@@ -29,7 +29,7 @@ Tampilan ringkasan seperti halaman profil di game. Berisi username, total jurnal
 
 ---
 
-## Cara Menjalankan
+## 🦎 Cara Menjalankan
 
 Pastikan kamu sudah punya compiler C++ (GCC/G++) yang terinstall di sistem.
 
