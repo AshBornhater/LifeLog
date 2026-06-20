@@ -1674,9 +1674,7 @@ void statistik()
     }
 }
 
-void achievement()
-{
-    bool tahunKabisat(int tahun)
+bool tahunKabisat(int tahun)
 {
     if (tahun % 4 != 0)
         return false;
