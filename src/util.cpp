@@ -1911,7 +1911,6 @@ void achievement()
         }
     }
 }
-}
 
 void profilAkun()
 {
