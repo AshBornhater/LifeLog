@@ -306,7 +306,7 @@ void profilAkun()
         achFile.close();
     }
 
-    // Merender desain UI Profil Baru (Gamer Dashboard Style)
+    // Merender desain UI Profil 
     drawBorder(BORDER_ROW, BORDER_COLUMN, 20, 80);
     
     moveCursor(BORDER_ROW + 2, BORDER_COLUMN + 26);
@@ -317,9 +317,21 @@ void profilAkun()
     
     moveCursor(BORDER_ROW + 7, BORDER_COLUMN + 10);
     cout << "Status Rank   : ";
-    if (jumlahJurnal >= 30)      cout << GREEN << "Senior Chronicler (Veteran)" << RESET_COLOR;
-    else if (jumlahJurnal >= 7)  cout << CYAN << "Journeyman Writer" << RESET_COLOR;
-    else                         cout << RED << "Novice Diarist" << RESET_COLOR;
+    if (jumlahJurnal >= 300) {
+    cout << MAGENTA << "Mythic Archivist (300+ Journal)" << RESET_COLOR;
+    } 
+    else if (jumlahJurnal >= 100) {
+        cout << BLUE << "Master Scribe (100+ journal)" << RESET_COLOR;
+    } 
+    else if (jumlahJurnal >= 50) {
+        cout << GREEN << "Senior Chronicler (50+ Journal)" << RESET_COLOR;
+    } 
+    else if (jumlahJurnal >= 10) {
+        cout << CYAN << "Journeyman Writer (10+ Journal)" << RESET_COLOR;
+    } 
+    else {
+        cout << RED << "Novice Diarist" << RESET_COLOR;
+    }
 
     moveCursor(BORDER_ROW + 9, BORDER_COLUMN + 10);
     cout << "------------------------------------------------------------";
