@@ -806,53 +806,6 @@ void tampilkanSemuaJurnal()
     getch();
 }
 
-// Fungsi pembantu alternatif untuk memfilter jurnal berdasarkan tanggal/keyword instan
-void cariJurnal()
-{
-    CLEAR_SCREEN;
-    SHOW_CURSOR;
-
-    cout << CYAN << "===== CARI JURNAL =====" << RESET_COLOR << "\n\n";
-    cout << "Masukkan tanggal / bagian tanggal (YYYY-MM-DD), kosongkan untuk semua: ";
-
-    string keyword;
-    getline(cin, keyword);
-    keyword = trimSpaces(keyword);
-
-    int matchCount = 0;
-    userData *userJournals = searchByUsername("data/userData.txt", currentUser, matchCount);
-
-    if (matchCount < 0)
-    {
-        cout << RED << "Gagal membaca data jurnal." << RESET_COLOR << "\n";
-    }
-    else
-    {
-        int found = 0;
-        for (int i = 0; i < matchCount; i++)
-        {
-            if (keyword.empty() || userJournals[i].date.find(keyword) != string::npos)
-            {
-                found++;
-                cout << "\n--- Journal " << found << " ---\n";
-                cout << "Date        : " << userJournals[i].date << "\n";
-                cout << "Mood        : " << userJournals[i].mood << "\n";
-                cout << "Productivity: " << userJournals[i].productivity << "\n";
-                cout << "Note        : " << GREEN << userJournals[i].note << RESET_COLOR"\n";
-            }
-        }
-
-        if (found == 0)
-            cout << "\nTidak ada jurnal yang cocok dengan '" << keyword << "'.\n";
-    }
-
-    delete[] userJournals;
-
-    cout << "\nPRESS ANY KEY TO RETURN...";
-    HIDE_CURSOR;
-    getch();
-}
-
 // Fungsi untuk memandu pengguna memilih entri jurnal yang ingin dihapus
 void hapusJurnal()
 {
