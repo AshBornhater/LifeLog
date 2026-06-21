@@ -1,16 +1,14 @@
 #include "../include/utils.hpp"
+#include <ctime>
 
 using namespace std;
 
 // Fungsi untuk memeriksa apakah suatu tahun merupakan tahun kabisat
 bool tahunKabisat(int tahun)
 {
-    if (tahun % 4 != 0)
-        return false;
-    if (tahun % 100 != 0)
-        return true;
-    if (tahun % 400 != 0)
-        return false;
+    if (tahun % 4 != 0) return false;
+    if (tahun % 100 != 0) return true;
+    if (tahun % 400 != 0) return false;
     return true;
 }
 
@@ -29,39 +27,84 @@ bool cekStreak(userData *dataUser, int jmlData, int target)
     if (jmlData < target)
         return false;
 
-    int hitungStreak = 1;
+    int maxStreak = 1;
+    int currentStreak = 1;
+
     for (int i = 1; i < jmlData; i++)
     {
-        int tahun1 = stoi(dataUser[i - 1].date.substr(0, 4));
-        int bulan1 = stoi(dataUser[i - 1].date.substr(5, 2));
-        int hari1 = stoi(dataUser[i - 1].date.substr(8, 2));
+        tm t1 = {0}, t2 = {0};
+        
+        t1.tm_year = stoi(dataUser[i - 1].date.substr(0, 4)) - 1900;
+        t1.tm_mon  = stoi(dataUser[i - 1].date.substr(5, 2)) - 1;
+        t1.tm_mday = stoi(dataUser[i - 1].date.substr(8, 2));
 
-        int tahun2 = stoi(dataUser[i].date.substr(0, 4));
-        int bulan2 = stoi(dataUser[i].date.substr(5, 2));
-        int hari2 = stoi(dataUser[i].date.substr(8, 2));
+        t2.tm_year = stoi(dataUser[i].date.substr(0, 4)) - 1900;
+        t2.tm_mon  = stoi(dataUser[i].date.substr(5, 2)) - 1;
+        t2.tm_mday = stoi(dataUser[i].date.substr(8, 2));
 
-        bool lanjut = false;
-        int akhirBulan1 = jumlahHariDalamBulan(bulan1, tahun1);
+        time_t time1 = mktime(&t1);
+        time_t time2 = mktime(&t2);
 
-        if (tahun2 == tahun1 && bulan2 == bulan1 && hari2 == hari1 + 1)
-            lanjut = true;
-        else if (tahun2 == tahun1 && bulan2 == bulan1 + 1 && hari1 == akhirBulan1 && hari2 == 1)
-            lanjut = true;
-        else if (tahun2 == tahun1 + 1 && bulan1 == 12 && bulan2 == 1 && hari1 == 31 && hari2 == 1)
-            lanjut = true;
+        double selisihDetik = difftime(time2, time1);
+        
+        // Konversi selisih waktu dari detik menjadi satuan hari (86400 detik = 1 hari)
+        long long selisihHari = selisihDetik / 86400;
 
-        if (lanjut)
+        if (selisihHari == 1)
         {
-            hitungStreak++;
-            if (hitungStreak >= target)
-                return true;
+            currentStreak++;
+            if (currentStreak > maxStreak) {
+                maxStreak = currentStreak;
+            }
         }
-        else
+        else if (selisihHari > 1)
         {
-            hitungStreak = 1;
+            currentStreak = 1;
         }
     }
-    return false;
+
+    return maxStreak >= target;
+}
+
+// Fungsi untuk menghitung total hari streak tertinggi yang pernah dicapai user
+int hitungMaksimalStreak(userData *dataUser, int jmlData)
+{
+    if (jmlData <= 0) return 0;
+
+    int maxStreak = 1;
+    int currentStreak = 1;
+
+    for (int i = 1; i < jmlData; i++)
+    {
+        tm t1 = {0}, t2 = {0};
+        
+        t1.tm_year = stoi(dataUser[i - 1].date.substr(0, 4)) - 1900;
+        t1.tm_mon  = stoi(dataUser[i - 1].date.substr(5, 2)) - 1;
+        t1.tm_mday = stoi(dataUser[i - 1].date.substr(8, 2));
+
+        t2.tm_year = stoi(dataUser[i].date.substr(0, 4)) - 1900;
+        t2.tm_mon  = stoi(dataUser[i].date.substr(5, 2)) - 1;
+        t2.tm_mday = stoi(dataUser[i].date.substr(8, 2));
+
+        time_t time1 = mktime(&t1);
+        time_t time2 = mktime(&t2);
+
+        double selisihDetik = difftime(time2, time1);
+        long long selisihHari = selisihDetik / 86400;
+
+        if (selisihHari == 1)
+        {
+            currentStreak++;
+            if (currentStreak > maxStreak) {
+                maxStreak = currentStreak;
+            }
+        }
+        else if (selisihHari > 1)
+        {
+            currentStreak = 1;
+        }
+    }
+    return maxStreak;
 }
 
 // Fungsi untuk mengurutkan riwayat data jurnal berdasarkan tanggal secara menaik
@@ -121,17 +164,34 @@ bool simpanAchievement(const string &username, const string &namaAchievement)
 // Fungsi untuk mengevaluasi data jurnal terkini demi membuka pencapaian baru
 void cekAchievementBaru(const string &username)
 {
-    int jmlData = 0;
-    userData *dataUser = searchByUsername("data/userData.txt", username, jmlData);
+    int jmlDataRaw = 0;
+    userData *dataUserRaw = searchByUsername("data/userData.txt", username, jmlDataRaw);
 
-    if (jmlData <= 0)
+    if (jmlDataRaw <= 0)
     {
-        delete[] dataUser;
+        delete[] dataUserRaw;
         cout << "Belum ada jurnal, belum ada achievement yang bisa dicek.\n";
         return;
     }
 
-    urutkanByTanggal(dataUser, jmlData);
+    urutkanByTanggal(dataUserRaw, jmlDataRaw);
+
+    userData *dataUser = new userData[jmlDataRaw];
+    int jmlData = 0;
+    
+    if (jmlDataRaw > 0) {
+        dataUser[jmlData++] = dataUserRaw[0];
+    }
+    
+    for (int i = 1; i < jmlDataRaw; i++) {
+        if (dataUserRaw[i].date != dataUserRaw[i - 1].date) {
+            dataUser[jmlData++] = dataUserRaw[i];
+        }
+    }
+
+    int totalMaksStreak = hitungMaksimalStreak(dataUser, jmlData);
+    cout << YELLOW << "Rekor Streak Menulis Jurnal Kamu: " << totalMaksStreak << " Hari Berturut-turut!\n" << RESET_COLOR;
+    cout << "---------------------------------------------------------\n\n";
 
     bool adaYgBaru = false;
 
@@ -156,9 +216,18 @@ void cekAchievementBaru(const string &username)
         adaYgBaru = true;
     }
 
+    // Penambahan pengecekan One Year Streak (365 hari berturut-turut)
+    if (cekStreak(dataUser, jmlData, 365) && !sudahPunyaAchievement(username, "One Year Streak"))
+    {
+        simpanAchievement(username, "One Year Streak");
+        cout << GREEN << "[!] LUAR BIASA! Kamu konsisten menulis jurnal selama 1 tahun (365 hari) berturut-turut!" << RESET_COLOR << "\n";
+        adaYgBaru = true;
+    }
+
     if (!adaYgBaru)
         cout << YELLOW << "Tidak ada achievement baru." << RESET_COLOR << "\n";
 
+    delete[] dataUserRaw;
     delete[] dataUser;
 }
 

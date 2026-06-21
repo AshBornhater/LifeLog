@@ -1,227 +1,50 @@
-# Project_Kelompok_5
+# 📝 LifeLog v1.0
+> Aplikasi jurnal harian berbasis CLI yang dibuat sebagai proyek akhir mata kuliah Algoritma dan Pemrograman.
 
-> **project praktikum alpro 2026**
-
----
-
-## Sebelum Mulai
-
-Pastikan kamu sudah:
-- ✅ Menginstal **Git** → https://git-scm.com/downloads
-- ✅ Memiliki akun **GitHub** → https://github.com
-- ✅ Mengonfigurasi **SSH key** ke akun GitHub kamu
+LifeLog adalah program terminal untuk mencatat jurnal harian, melacak mood dan produktivitas, serta melihat pola perkembangan diri dari waktu ke waktu. Semua data tersimpan secara lokal, tidak ada koneksi internet, tidak ada akun cloud. Cukup tulis, simpan, dan baca kembali kapan saja.
 
 ---
 
-## Clone Repository (Lakukan Sekali Saja)
+## 💻 Fitur
 
-Buka terminal / cmd, lalu jalankan:
+### Jurnal Harian
+Ini adalah inti dari aplikasi. Kamu bisa menulis entri baru, membaca semua jurnal yang sudah tersimpan, atau mencarinya berdasarkan berbagai kriteria:
 
-```bash
-git clone git@github.com:IzzaMaulana/Project-Alpro-Kelompok-5.git
-cd Project-Alpro-Kelompok-5
-```
+- **Tulis jurnal** - Sistem otomatis mencatat nama pengguna dan tanggal hari ini. Kamu tinggal isi skala mood (1-10), skala produktivitas (1-10), lalu tulis catatan bebas tentang hari kamu.
+- **Lihat semua jurnal** - Menampilkan seluruh riwayat entri dari yang pertama sampai terbaru.
+- **Cari jurnal** - Bisa dicari berdasarkan tanggal (format YYYY-MM-DD), kategori mood (buruk <= 3, biasa 4-6, bagus >= 7), tingkat produktivitas, atau kata kunci dari isi catatan.
+- **Hapus jurnal** - Pilih nomor urut entri yang ingin dihapus, lalu konfirmasi. Penghapusan bersifat permanen.
 
----
+### Statistik
+Semacam dashboard pribadi. Di sini kamu bisa lihat:
 
-## Membuat Branch Sendiri (Lakukan Sekali Saja)
+- Ringkasan keseluruhan: total entri, rata-rata mood dan produktivitas, tanggal mood tertinggi dan terendah.
+- Statistik mingguan dan bulanan dalam bentuk tabel dan grafik batang horizontal sederhana menggunakan karakter `[#####---]`.
 
-> Jangan pernah kerja langsung di `main`. Selalu buat branch sendiri.
+### Achievement
+Sistem gamifikasi kecil-kecilan supaya nulis jurnal terasa lebih menyenangkan. Ada beberapa badge yang bisa di-unlock berdasarkan konsistensi, mulai dari *First Entry* sampai *One Year Streak*. Menu ini juga menampilkan rekor streak tertinggi yang pernah kamu capai.
 
-```bash
-git switch -c nama_branch
-```
-
-Verifikasi: branch aktif ditandai `*`:
-
-```bash
-git branch
-```
-
-Output:
-
-```
-* nama_branch
-  main
-```
+### Profil Akun
+Tampilan ringkasan seperti halaman profil di game. Berisi username, total jurnal, jumlah achievement, rekor streak, dan status rank yang naik seiring banyaknya entri yang kamu tulis (misalnya *Novice Diarist*, *Journeyman Writer*, *Senior Chronicler*).
 
 ---
 
-## Workflow Harian
+## 🦎 Cara Menjalankan
 
-Lakukan langkah ini **setiap kali mau mulai kerja**.
+Pastikan kamu sudah punya compiler C++ (GCC/G++) yang terinstall di sistem.
 
-### Langkah 1: Ambil Update Terbaru dari Main
+**1. Compile proyek**
 
-Sebelum kerja, selalu sinkronkan branch kamu dengan `main` agar tidak tertinggal:
-
-```bash
-git switch main
-git pull origin main
-git switch nama_branch
-git merge main
-```
-
-Jika muncul conflict setelah merge, lihat bagian [Mengatasi Conflict](#️-mengatasi-conflict).
-
----
-
-### Langkah 2: Kerjakan Tugas
-
-Edit atau tambahkan file sesuai bagian yang kamu kerjakan.
-
----
-
-### Langkah 3: Cek Perubahan
+Masuk ke direktori utama `LifeLog`, lalu jalankan:
 
 ```bash
-git status
+g++ src/*.cpp -o main
 ```
 
-Pastikan hanya file yang kamu ubah yang muncul. Jika ada file yang tidak sengaja ikut, jangan di-add.
-
----
-
-### Langkah 4: Tambahkan File ke Staging
-
-Semua file sekaligus:
+**2. Jalankan program**
 
 ```bash
-git add .
-```
-
-Atau file tertentu saja:
-
-```bash
-git add nama_file.cpp
-```
-
----
-
-### Langkah 5: Commit Perubahan
-
-```bash
-git commit -m "tipe: deskripsi singkat perubahan"
-```
-
-#### Format Tipe Commit
-
-| Tipe | Kapan Dipakai |
-|------|---------------|
-| `feat` | Menambah fitur baru |
-| `fix` | Memperbaiki bug |
-| `docs` | Mengubah dokumentasi |
-| `refactor` | Merapikan kode tanpa ubah fungsi |
-| `chore` | Hal-hal kecil lainnya |
-
-Contoh:
-
-```bash
-git commit -m "feat: menambahkan fungsi hitung total"
-git commit -m "fix: memperbaiki validasi input kosong"
-git commit -m "docs: memperbarui README"
-git commit -m "refactor: merapikan kode"
-```
-
----
-
-### Langkah 6: Push ke GitHub
-
-Push pertama kali dari branch ini (hanya sekali):
-
-```bash
-git push -u origin nama_branch
-```
-
-Push berikutnya cukup:
-
-```bash
-git push
-```
-
----
-
-### Langkah 7: Buat Pull Request
-
-Setelah push, minta perubahan kamu digabungkan ke `main` lewat Pull Request:
-
-1. Buka repository di GitHub: https://github.com/IzzaMaulana/Project-Alpro-Kelompok-5
-2. Klik tab **Pull Requests**
-3. Klik **New Pull Request**
-4. Pilih branch kamu sebagai **compare**, `main` sebagai **base**
-5. Klik **Create Pull Request**
-6. Isi judul dan deskripsi singkat apa yang kamu kerjakan
-7. Klik **Create Pull Request**
-
----
-
-## Mengatasi Conflict
-
-Conflict terjadi ketika dua orang mengubah baris yang sama pada file yang sama.
-
-### 1. Cek file yang conflict
-
-```bash
-git status
-```
-
-File yang conflict ditandai `both modified`.
-
-### 2. Buka file tersebut
-
-Git menandai bagian yang conflict seperti ini:
-
-```
-<<<<<<< HEAD
-kode milik kamu
-=======
-kode dari main / anggota lain
->>>>>>> main
-```
-
-### 3. Edit: pilih atau gabungkan kode yang benar
-
-Hapus penanda `<<<<<<<`, `=======`, dan `>>>>>>>`, lalu simpan file.
-
-### 4. Selesaikan dan push
-
-```bash
-git add .
-git commit -m "fix: resolve conflict"
-git push
-```
-
-> Conflict bisa dihindari dengan selalu `pull` dari `main` sebelum mulai kerja.
-
----
-
-## Checklist Sebelum Push
-
-- [ ] Sudah `pull` dari `main` sebelum mulai kerja
-- [ ] Berada di branch yang benar, bukan `main`
-- [ ] Sudah `git status`, tidak ada file yang tidak sengaja ikut
-- [ ] Sudah `git add` file yang diperlukan
-- [ ] Pesan commit jelas dan menggunakan format yang benar
-- [ ] Kode bisa di-compile / tidak ada error besar
-- [ ] Sudah `git push`
-- [ ] Sudah buat Pull Request
-
----
-
-## Referensi Command
-
-```bash
-git status                        # cek status file
-git branch                        # cek branch aktif
-git switch nama_branch            # pindah ke branch
-git switch -c nama_branch         # buat branch baru sekaligus pindah
-git add .                         # staging semua file
-git add nama_file                 # staging file tertentu
-git commit -m "pesan"             # commit
-git push                          # push (setelah push pertama)
-git push -u origin nama_branch    # push pertama kali
-git pull origin main              # ambil update dari main
-git merge main                    # gabungkan main ke branch aktif
+./main
 ```
 
 ---
