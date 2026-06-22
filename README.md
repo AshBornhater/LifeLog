@@ -371,7 +371,7 @@ Proyek ini dibuat untuk menerapkan berbagai konsep yang dipelajari pada mata kul
 * POINTER
 ---
 
-## 👨‍💻 Tim Pengembang
+## 👨‍💻 Developers
 
 **LifeLog v1.0**
 
