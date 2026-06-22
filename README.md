@@ -16,7 +16,7 @@ Ini adalah inti dari aplikasi. Kamu bisa menulis entri baru, membaca semua jurna
 - **Hapus jurnal** - Pilih nomor urut entri yang ingin dihapus, lalu konfirmasi. Penghapusan bersifat permanen.
 
 ### Statistik
-Semacam dashboard pribadi. Di sini kamu bisa lihat:
+Semacam dashboard pribadi. Di sini kamu bisa lihat
 
 - Ringkasan keseluruhan: total entri, rata-rata mood dan produktivitas, tanggal mood tertinggi dan terendah.
 - Statistik mingguan dan bulanan dalam bentuk tabel dan grafik batang horizontal sederhana menggunakan karakter `[#####---]`.
